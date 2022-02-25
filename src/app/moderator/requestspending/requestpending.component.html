@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <h5 class="page-title">Demandes en attentes</h5>
+  <div class="requests-access"><a href="/moderateur">Tableau de bord</a></div>
+
+  <div class="request-list">
+
+    <h6>En attente de validation: <span> {{ countPending }} </span></h6>
+
+    <table>
+      <thead>
+      <tr>
+        <td>DATE</td>
+        <td>N° DECAISSEMENT</td>
+        <td>BENEFICIAIRE</td>
+        <td>MOTIF</td>
+        <td>AFFECTATION</td>
+        <td>INDICE</td>
+        <td>MONTANT</td>
+      </tr>
+      </thead>
+
+      <tbody >
+        <tr *ngFor="let disb of pendingDisburs; let i = index" [ngClass]="{'untreated': !treated }"
+            routerLink="./requete/{{ disb.debursementId }}/processing">
+          <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
+          <td>{{ disb.identifier }}</td>
+          <td>{{ disb.recipientId }}</td>
+          <td style="text-align: left">{{ disb.reason }}</td>
+          <td>SECTEUR</td>
+          <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+          <td style="text-align: right;">{{ disb.amountRequested }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+</div>
+
+<app-footer></app-footer>
+

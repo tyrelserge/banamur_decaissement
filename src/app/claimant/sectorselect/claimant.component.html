@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h5 class="page-title">Table de décaissement</h5>
+  <div class="requests-access"><a href="" routerLink="/decaissement/historique">Décaissements en cours <span style="">{{ current }}</span></a></div>
+  <div class="disbursment-items">
+    <div class="disbursment-item">
+      <a href="#" routerLink="/decaissement/budgsector/1/demande"><img src="assets/icon/business_center.svg" alt=""></a>
+      <div class="item-label">
+        <h4>Bureau</h4>
+        <p>Décaissement pour besoins administratifs</p>
+      </div>
+    </div>
+    <div class="disbursment-item">
+      <a href="#" routerLink="/decaissement/budgsector/2/demande"><img src="assets/icon/milestone.svg" alt=""></a>
+      <div class="item-label">
+        <h4>Chantier</h4>
+        <p>Décaissement pour matériels et necessaire de chantier</p>
+      </div>
+    </div>
+    <div class="disbursment-item">
+      <a href="#" routerLink="/decaissement/budgsector/3/demande"><img src="assets/icon/build.svg" alt=""></a>
+      <div class="item-label">
+        <h4>Garrage</h4>
+        <p>Décaissement pour entretiens et réparations de véhicules</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
+

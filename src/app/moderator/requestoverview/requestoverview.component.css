@@ -1,0 +1,34 @@
+.page-title {
+  display:inline-block; margin-top: 46px; color:#4F6064; font-weight: bold;
+}
+
+.requests-access {
+  width: 198px; float: right; margin-top: 26px; text-align: center;
+}
+
+.requests-access a {
+  display: block; padding-top: 8px; padding-bottom: 10px;
+  color: gray; border: 1px lightgray solid; border-radius: 10px;
+}
+.requests-access a:hover {
+  color: #003564; border: 1px darkgray solid;
+}
+
+.request-item {margin-top: 40px}
+.request-item table{width: 100%; height: 100%; margin-bottom: 40px;}
+.request-item table thead{background-color: lightgray;}
+.request-item table thead tr{height: 46px;}
+.request-item table tr td{text-align: center; border: 1px gray solid }
+
+.validation-chain {margin-top: 40px}
+.validation-chain table{width: 100%; height: 100%; margin-bottom: 40px;}
+.validation-chain table thead{background-color: lightgray;}
+.validation-chain table thead tr{height: 46px;}
+.validation-chain table tr td{text-align: center; border: 1px gray solid }
+
+.chain-item {width: 30%}
+.hide {display: none}
+
+a, a:visited, a:hover { text-decoration: none; }
+
+

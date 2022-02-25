@@ -1,0 +1,90 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <h5 class="page-title">Mes décaissements </h5>
+  <div class="requests-access"><a href="/decaissement/historique">Table de décaissement</a></div>
+
+  <div class="request-item">
+
+    <h6 style="margin-bottom: 20px">Décaissement N°: <span> {{ disbursement.identifier }} </span></h6>
+
+    <table>
+      <thead>
+      <tr>
+        <td>DATE</td>
+        <td>MOTIF</td>
+        <td>AFFECTATION</td>
+        <td>INDICE</td>
+        <td>MONTANT</td>
+        <td>APPROUVE</td>
+        <td>OBSERVATION</td>
+      </tr>
+      </thead>
+
+      <tbody style="height: 80px;">
+      <tr>
+        <td>{{ disbursement.createdOn | date: 'd / MM / yyyy à HH:mm' }}</td>
+        <td style="text-align: left">{{ disbursement.reason }}</td>
+        <td>SECTEUR</td>
+        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disbursement.budgindexId }}</td>
+        <td style="text-align: right;">{{ disbursement.amountRequested }}</td>
+        <td><span style="color: #8b2b17;">{{ disbursement.amountApproved==null ? '-' : disbursement.amountApproved }}</span></td>
+        <td><a href="/decaissement/historique/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="validation-chain">
+
+    <h6>Chaine de validation</h6>
+
+    <table>
+      <thead>
+      <tr>
+        <td class="chain-item chain1"> {{ validationChain[0] ? validationChain[0].department.toUpperCase() : 'DIRECTION' }}</td>
+        <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].department.toUpperCase() : 'COMPTABILITE' }}</td>
+        <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].department.toUpperCase() : 'CAISSE' }}</td>
+      </tr>
+      </thead>
+
+      <tr style="height: 80px;">
+        <td class="chain-item chain1"> {{ validationChain[0] ? validationChain[0].validator : ' - ' }}</td>
+        <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].validator : ' - ' }}</td>
+        <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].validator : ' - ' }}</td>
+      </tr>
+
+      <tr>
+        <td class="chain-item chain1" colspan="3" style="border: none; text-align: left"><br/></td>
+      </tr>
+
+      <tr id="obsev">
+        <td class="chain-item chain1" colspan="3" style="border: none; text-align: left"> Observations : </td>
+      </tr>
+
+      <tbody *ngFor="let valid of validationChain" [ngClass]="{'hide': (valid.observation=='' || valid.observation=='')}">
+      <tr>
+        <td class="chain-item chain1" colspan="3" style="border: none;"> <hr/> </td>
+      </tr>
+      <tr>
+        <td class="chain-item chain1" colspan="3" style="border: none; text-align: left">
+          <h6> {{ valid ? valid.validator : ' - ' }}</h6>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="chain-item chain1" colspan="3" style="border: none; text-align: left">
+          {{ valid ? valid.observation : ' - ' }}
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+</div>
+
+<app-footer></app-footer>
+

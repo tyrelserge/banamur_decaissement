@@ -1,0 +1,150 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <h5 class="page-title">Traitement de demande</h5>
+  <div class="requests-access"><a href="/moderateur/pending-requetes">Retour aux requêtes</a></div>
+
+  <div class="side-left">
+
+    <div class="disbursment-item">
+      <a href="#"><img src="assets/icon/{{ budgetSector.budgsectorImg }}" alt=""></a>
+      <div class="item-label">
+        <h4>{{ budgetSector.budgsectorName }}</h4>
+        <p>{{ budgetSector.budgsectorDescription }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="body-content">
+    <form class="form-disbursment" (ngSubmit)="onSubmitValidation(disbursement, validationForm)" #validationForm="ngForm">
+
+      <table>
+
+        <tr>
+          <td class="col1" colspan="4"><h6>Décaissement N°:
+            <span style="color: darkred"> {{ disbursement.identifier }} </span></h6></td>
+        </tr>
+
+        <br>
+
+        <tr>
+          <td class="col1"></td>
+          <td class="col2" style="vertical-align: bottom; padding-bottom: 15px">Bénéficiaire :</td>
+          <td class="col3" colspan="2">
+            <div class="mb-3">
+              <input type="text" name="applicant" class="form-control recipient readonly" readonly
+                     *ngIf="(disbursement.userId == disbursement.recipientId)"
+                     placeholder = "{{ claimant.civility + '. ' + claimant.lastname + ' ' + claimant.firstname }}">
+              <div *ngIf="(disbursement.userId != disbursement.recipientId)">
+                <p>Demandeur : <span style="font-weight: bold">
+                {{ claimant.civility + '. ' + claimant.lastname + ' ' + claimant.firstname }}
+                </span></p>
+              <input type="text" name="for" class="form-control recipient readonly" readonly
+                     placeholder = "{{ recipient.civility + '. ' + recipient.lastname + ' ' + recipient.firstname }}">
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="col1"></td>
+          <td class="col2">Montant demandé :</td>
+          <td class="col3" colspan="2">
+            <div class="mb-3">
+              <input type="text" name="totalamount" class="form-control amount readonly" readonly
+                     placeholder="{{ disbursement.amountRequested }} XOF"/>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><hr></td>
+        </tr>
+
+        <tr>
+          <td class="col1">Indice du budget :</td>
+          <td colspan="3">
+            <span style="font-weight: bold">{{ budgetIndex.budgindexName }}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="col1">Motif :</td>
+          <td colspan="3">
+            <div class="mb-3" style="border-left: 1px solid #ced4da; padding-left: 10px">
+
+
+              <table class="reseonsitem">
+
+                <tr *ngIf="disbursement.reason">
+                  <td  class="itm1" colspan="4">{{ disbursement.reason }}</td>
+                </tr>
+
+                <tr style="font-weight: bold; border-bottom: 1px solid #ced4da">
+                  <td class="itm1" colspan="">Désignation</td>
+                  <td class="itm2" colspan="">Qté</td>
+                  <td class="itm3" colspan="">Prix unitaire</td>
+                  <td class="itm4" colspan="">Prix total</td>
+                </tr>
+                <tr *ngFor="let reason of disbursement.reasonItems">
+                  <td class="itm1">{{ reason.designation!=null ? reason.designation : '-' }}</td>
+                  <td class="itm2">{{ reason.quatity!=null ? reason.quatity : '-' }}</td>
+                  <td class="itm3">{{ reason.unitprice!=null ? reason.unitprice : '-' }}</td>
+                  <td class="itm4">{{ reason.totalprice!=null ? reason.totalprice : '-' }}</td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><br/></td>
+        </tr>
+
+        <tr>
+          <td class="col1">Montant approuvé :</td>
+          <td colspan="3"><div class="mb-3">
+            <input type="text" name="amountapprouved" class="form-control" placeholder="0" required
+            ngModel="{{ disbursement.amountRequested }}">
+          </div></td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><br/></td>
+        </tr>
+
+        <tr>
+          <td colspan="4" class="col1">Observations :</td>
+        </tr>
+
+        <tr>
+          <td colspan="4">
+            <div class="mb-3">
+              <textarea name="observation" ngModel class="form-control" rows="2"></textarea>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><hr></td>
+        </tr>
+        <tr>
+
+          <td class="col1" colspan="2">
+            <div class="form-check form-switch" style="margin-left: 0; padding-left: 0">
+              <input class="form-check-input" checked name="valid" type="checkbox" role="switch" id="flexSwitchCheckChecked" ngModel="true">
+              <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px">Refuser / Valider</label>
+            </div>
+          </td>
+          <td class="col3" colspan="2">
+            <button  type="submit" class="btn btn-primary" [disabled]="validationForm.invalid">Terminer</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div style=" clear: both;"></div>
+</div>
+<app-footer></app-footer>

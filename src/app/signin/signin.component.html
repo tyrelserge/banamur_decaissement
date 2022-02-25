@@ -1,0 +1,23 @@
+<div class="container-fluid bg-cover">
+  <div class="container">
+
+    <a routerLink='/inscription'>
+      <button class="btn btn-secondary  btn-account-request" type="button"
+            *ngIf="!isAuth">Demandez un compte</button>
+    </a>
+
+    <form class="form-connexion" (ngSubmit)="onSubmitConnexion(signinForm)" #signinForm="ngForm">
+      <div class="mb-3 ">
+        <label for="InputEmail1" class="form-label">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+            <path fill="#A0A0A0" d="M12 15c0 0-8 0-11 7 0 0 5.010 2 11 2s11-2 11-2c-3-7-11-7-11-7zM12 14c3 0 5-3 5-8s-5-5-5-5-5 0-5 5 2 8 5 8z"></path>
+          </svg>Identifiez-vous</label>
+        <input type="email" name="username" placeholder="e-mail@banamur" ngModel required class="form-control" id="InputEmail1" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <input type="password" name="password" autocomplete="off" placeholder="Mode de passe" ngModel required class="form-control" id="InputPassword">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="signinForm.invalid">Connexion</button>
+    </form>
+  </div>
+</div>

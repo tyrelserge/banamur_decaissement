@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <h5 class="page-title">Mes décaissements </h5>
+  <div class="requests-access"><a href="/decaissement">Table de décaissement</a></div>
+
+  <div class="request-list">
+
+    <h6>Décaissement en cours: <span> {{ current }} </span></h6>
+
+    <table>
+      <thead>
+        <tr>
+          <td>DATE</td>
+          <td>N° DECAISSEMENT</td>
+          <td>MOTIF</td>
+          <td>AFFECTATION</td>
+          <td>INDICE</td>
+          <td>MONTANT</td>
+          <td>APPROUVE</td>
+          <td>DETAILS</td>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let disb of disbursements; let i = index">
+        <tr *ngIf="disb.status=='submitted';">
+          <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
+          <td>{{ disb.identifier }}</td>
+          <td style="text-align: left">{{ disb.reason }}</td>
+          <td>SECTEUR</td>
+          <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+          <td style="text-align: right;">{{ disb.amountRequested }}</td>
+          <td><span style="color: #8b2b17;">En attente</span></td>
+          <td><a href="#"  routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h6>Décaissement Termné: <span> {{ approved }} </span></h6>
+
+    <table>
+      <thead>
+      <tr>
+        <td>DATE</td>
+        <td>N° DECAISSEMENT</td>
+        <td>MOTIF</td>
+        <td>AFFECTATION</td>
+        <td>INDICE</td>
+        <td>MONTANT</td>
+        <td>APPROUVE</td>
+        <td>DETAILS</td>
+      </tr>
+      </thead>
+
+      <tbody *ngFor="let disb of disbursements;">
+      <tr *ngIf="disb.status=='approved'">
+        <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
+        <td>{{ disb.identifier }}</td>
+        <td style="text-align: left">{{ disb.reason }}</td>
+        <td>SECTEUR</td>
+        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+        <td style="text-align: right;">{{ disb.amountRequested }}</td>
+        <td><span>{{ disb.amountApproved==null ? '-' : disb.amountApproved }}</span></td>
+        <td><a href="#" routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h6>Décaissement Rejété: <span>{{ rejected }}</span></h6>
+
+    <table>
+      <thead>
+      <tr>
+        <td>DATE</td>
+        <td>N° DECAISSEMENT</td>
+        <td>MOTIF</td>
+        <td>AFFECTATION</td>
+        <td>INDICE</td>
+        <td>MONTANT</td>
+        <td>APPROUVE</td>
+        <td>DETAILS</td>
+      </tr>
+      </thead>
+
+      <tbody *ngFor="let disb of disbursements;">
+      <tr *ngIf="disb.status=='rejected'">
+        <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
+        <td>{{ disb.identifier }}</td>
+        <td style="text-align: left">{{ disb.reason }}</td>
+        <td>SECTEUR</td>
+        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+        <td style="text-align: right;">{{ disb.amountRequested }}</td>
+        <td><span>{{ disb.amountApproved==null ? '-' : disb.amountApproved }}</span></td>
+        <td><a href="#"  routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>
+

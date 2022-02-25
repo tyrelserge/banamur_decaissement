@@ -1,0 +1,62 @@
+<div class="container-fluid bg-cover">
+  <div class="container">
+
+    <a routerLink='/connexion'>
+      <button class="btn btn-secondary  btn-account-request" type="button">Connexion</button>
+    </a>
+
+    <form class="form-signup" (ngSubmit)="onSubmitSignup(signupForm)" #signupForm="ngForm">
+
+      <div for="" class="form-label">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+          <path fill="#A0A0A0" d="M12 15c0 0-8 0-11 7 0 0 5.010 2 11 2s11-2 11-2c-3-7-11-7-11-7zM12 14c3 0 5-3 5-8s-5-5-5-5-5 0-5 5 2 8 5 8z"></path>
+      </svg>Demande de compte</div>
+
+      <!-- check box -->
+
+      <div class="form-check form-check-inline">
+      <input type="radio" class="btn-check"  name="civility" id="m-outlined" value="M" ngModel autocomplete="off" checked required>
+      <label class="btn btn-outline-secondary" for="m-outlined">M.</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+      <input type="radio" class="btn-check"  name="civility" id="mme-outlined" value="Mme" ngModel autocomplete="off" required>
+      <label class="btn btn-outline-secondary" for="mme-outlined">Mme.</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input type="radio" class="btn-check" name="civility" id="mlle-outlined" value="Mlle" ngModel autocomplete="off" required>
+        <label class="btn btn-outline-secondary" for="mlle-outlined">Mlle.</label>
+      </div>
+
+      <!-- end check box -->
+
+      <div class="mb-3 ">
+        <input type="text" name="lastname" placeholder="Nom" ngModel required class="form-control" id="InputLastname">
+      </div>
+      <div class="mb-3 ">
+        <input type="text" name="firstname" placeholder="Prénom(s)" ngModel required class="form-control" id="InputFirstname">
+      </div>
+      <div class="mb-3 ">
+        <select class="form-select" aria-label="Service" name="office" ngModel>
+          <option *ngFor="let office of offices"
+                  value="{{office.officeId}}">{{ office.officeName }}</option>
+
+          <option value="" disabled></option>
+          <option value="0"> + Ajouter un poste</option>
+        </select>
+      </div>
+      <div class="mb-3 ">
+        <input type="text" name="mobile" placeholder="N° mobile" required class="form-control" id="InputMobile" ngModel required>
+      </div>
+      <div class="mb-3 ">
+        <input type="email" name="email" placeholder="e-mail@banamur" required class="form-control" id="InputEmail1" aria-describedby="emailHelp" ngModel required>
+      </div>
+      <div class="mb-3">
+        <input type="password" name="password" placeholder="Mode de passe" required class="form-control" id="InputPassword1" ngModel required>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid" >Soumettre</button>
+    </form>
+
+  </div>
+</div>

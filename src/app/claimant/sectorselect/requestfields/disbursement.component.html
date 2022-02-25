@@ -1,0 +1,144 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <h5 class="page-title">Décaissement</h5>
+  <div class="requests-access"><a href="/decaissement">Table de décaissement</a></div>
+
+  <div class="side-left">
+
+    <div class="disbursment-item">
+      <a href="#"><img src="assets/icon/{{ budgsector.budgsectorImg }}" alt=""></a>
+      <div class="item-label">
+        <h4>{{ budgsector.budgsectorName }}</h4>
+        <p>{{ budgsector.budgsectorDescription }}</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="body-content">
+
+    <form class="form-disbursment" (ngSubmit)="onSubmitDisbursment(disbursForm)" #disbursForm="ngForm">
+
+      <table>
+
+        <tr>
+          <td class="col1" colspan="4"><h6>Bon de sortie de caisse</h6></td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><br></td>
+        </tr>
+
+        <tr>
+          <td class="col1" colspan="2">Date: {{ today | date: 'd / MM / yyyy' }}</td>
+          <td class="col3" colspan="2"><h6>N° <span>DECAISS{{ today | date: 'YY-MM/' }}{{ numregister }}</span></h6>
+              <input type="hidden" name="numero"  ngModel="DECAISS{{ today | date: 'YY-MM/' }}{{ numregister }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><br></td>
+        </tr>
+
+        <tr>
+          <td class="col1"></td>
+          <td class="col2" style="vertical-align: bottom; padding-bottom: 15px">Bénéficiaire :</td>
+          <td class="col3">
+            <div class="mb-3">
+              <input type="text" name="applicant" class="form-control recipient readonly" readonly
+                     placeholder = "{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}">
+
+              <select class="form-select" name="for" aria-label="Selectionnez"
+                      ngModel="{{ user.userId }}" [hidden]="!showSelectBeneficiary">
+
+                <option [selected]="!showSelectBeneficiary" value=""></option>
+                <option *ngFor="let b of users;" value="{{ b.userId }}" >{{ b.civility + '. ' + b.lastname + ' ' + b.firstname }}</option>
+
+              </select>
+
+            </div>
+          </td>
+          <td class="col4" style="vertical-align: bottom; padding-bottom: 15px">
+            <a href="#" routerLink="./" (click)="onDisplaySelectBeneficiary()">
+              <span [hidden]="showSelectBeneficiary">Modifier</span>
+            </a><a href="/decaissement/budgsector/{{ budgsector.budgsectorId }}/demande" [hidden]="!showSelectBeneficiary">Annuler</a></td>
+        </tr>
+
+        <tr>
+          <td class="col1"></td>
+          <td class="col2">Montant cumulé  :</td>
+          <td class="col3">
+            <div class="mb-3">
+              <input type="text" name="totalamount" class="form-control amount readonly" readonly placeholder="0"
+              ngModel="{{ cumulateAmount }}">
+            </div>
+          </td>
+          <td class="col4"><span>XOF</span></td>
+        </tr>
+
+        <tr>
+          <td colspan="4"><hr></td>
+        </tr>
+
+        <tr>
+          <td class="col1">Indice du budget :</td>
+          <td colspan="3">
+            <select name="budgetIndex" class="form-select" ngModel required>
+              <option selected></option>
+
+              <option *ngFor="let indexbg of budgetIndex;" value="{{ indexbg.budgindexId }}">
+                  {{ indexbg.budgindexName }}
+              </option>
+
+              <option value="">Autre</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="col1">Motif :</td>
+          <td colspan="2">
+            <div class="mb-3">
+              <textarea name="reason" ngModel class="form-control" id="" rows="2"></textarea>
+            </div>
+          </td>
+          <td colspan="2"><button class="btn btn-light" type="button">+<br/>Détails</button></td>
+        </tr>
+
+        <tr>
+          <td class="col1">Montant :</td>
+          <td colspan="3"><div class="mb-3">
+            <input type="text" name="amount" class="form-control" [(ngModel)]="cumulateAmount" placeholder="0" required>
+          </div></td>
+        </tr>
+
+        <!--
+        <tr>
+          <td class="col1"></td>
+          <td class="col2">
+            <button class="btn btn-light" type="button">+ Ajouter un motif</button>
+          </td>
+          <td class="col3" colspan="2" style="text-align: left">
+
+          </td>
+        </tr>  -->
+
+        <tr>
+          <td colspan="4"><hr></td>
+        </tr>
+
+        <tr>
+          <td class="col1"></td>
+          <td class="col2"></td>
+          <td class="col3" colspan="2">
+            <button  type="submit" class="btn btn-primary" [disabled]="disbursForm.invalid">Soumettre</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div style="clear: both;"></div>
+</div>
+<app-footer></app-footer>
