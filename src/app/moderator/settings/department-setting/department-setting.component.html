@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <table>
+    <tr>
+      <td class="side">
+        <h4 class="page-title">Paramètre</h4>
+
+        <div class="card left-side-card">
+          <!-- <div class="card-header">
+            Paramètre
+          </div> -->
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+            <li class="list-group-item current" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
+          </ul>
+          <!--<div class="card-footer"></div>-->
+        </div>
+      </td>
+
+      <td class="content">
+        <div class="setting-bloc">
+
+          <table class="list-group-setting">
+            <tr>
+              <td class="col1" colspan="3"><h5>Rôle et service</h5></td>
+              <td class="col2" colspan="2" style="text-align: right"><span class="accent">Rôle: </span> Administrateur</td>
+            </tr>
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1" rowspan="5"><span class="accent">Rôles</span></td>
+              <td class="col2"></td>
+              <td class="col3"><span style="color: #333333;">Editer</span></td>
+              <td class="col4"><span style="color: #333333;">Valider</span></td>
+              <td class="col5"><span style="color: #333333;">Decaisser</span></td>
+            </tr>
+
+            <tr>
+              <td class="col1"></td>
+              <td class="col2" colspan="4"><hr/></td>
+            </tr>
+
+            <tr>
+
+              <td class="col2">Administrateur</td>
+              <td class="col3"><span style="color: green;">oui</span></td>
+              <td class="col4"><span style="color: green;">oui</span></td>
+              <td class="col5"><span style="color: green;">oui</span></td>
+            </tr>
+
+            <tr>
+              <td class="col2">Moderateur</td>
+              <td class="col3"><span style="color: green;">oui</span></td>
+              <td class="col4"><span style="color: green;">oui</span></td>
+              <td class="col5"><span style="color: red;">-</span></td>
+            </tr>
+            <tr>
+
+              <td class="col2">Caissier(e)</td>
+              <td class="col3"><span style="color: red;">-</span></td>
+              <td class="col4"><span style="color: red;">-</span></td>
+              <td class="col5"><span style="color: green;">oui</span></td>
+            </tr>
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1"><span class="accent">Departements</span></td>
+              <td class="col2" colspan="4">
+                <div class="bloc-items">
+                  <span class="item" *ngFor="let department of departments"> {{ department.departmentName }}
+                    <a href="" class="del">X</a>
+                  </span>
+                </div>
+
+                <form (ngSubmit)="onSubmitDepartment(departmentForm)" #departmentForm="ngForm">
+                  <div class="input-group mb-3">
+                    <input type="text" name="name" class="form-control" placeholder="Departement" style="width:240px" ngModel required>
+                    <button class="btn btn-outline-primary" [disabled]="departmentForm.invalid" type="submit">Ajouter</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1"><span class="accent">Fonctions</span></td>
+              <td class="col2" colspan="4">
+
+                <div class="bloc-items">
+                  <span class="item" *ngFor="let office of offices"> {{ office.officeName }}
+                    <a href="" class="del">X</a>
+                  </span>
+                </div>
+
+                <form (ngSubmit)="onSubmitOffice(officeForm)" #officeForm="ngForm">
+                  <div class="input-group mb-3">
+                    <select class="form-select" name="departmentId" ngModel style="width: 90px;" required>
+                      <option *ngFor="let department of departments" value="{{ department.departmentId }}">{{ department.departmentName }}</option>
+                    </select>
+                    <input type="text" name="name" ngModel class="form-control" placeholder="Bureau" style="width:240px" required>
+                    <select class="form-select" name="profileId" ngModel style="width: 20px;" required>
+                      <option *ngFor="let profile of profiles" value="{{ profile.profileId }}">{{ profile.profileName }}</option>
+                    </select>
+                    <button class="btn btn-outline-primary" [disabled]="officeForm.invalid" type="submit">Ajouter</button>
+                  </div>
+
+                </form>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+      </td>
+
+    </tr>
+  </table>
+
+</div>
+
+<app-footer></app-footer>

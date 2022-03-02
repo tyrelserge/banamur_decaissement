@@ -32,11 +32,13 @@
     </div> -->
     <ul class="list-group list-group-flush">
       <li class="list-group-item" *ngFor="let notif of userNotfs ">
-        <a href="#" routerLink="/" class="notice_item"
+        <a href="#" class="notice_item"
                     [ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
-                    (click)="onOpenNotification(notif.notifuserId, '/');">
+                    (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
           <h6>{{ notif.notification!=null ? notif.notification.notificationSubject : null }}</h6>
-          <p><a href="" class="accent">{{ notif.notification!=null && notif.notification.notificationDetails!=undefined ?
+          <p><a href="" class="accent"[ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
+                (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
+            {{ notif.notification!=null && notif.notification.notificationDetails!=undefined ?
             notif.notification.notificationDetails.slice(0,48) + (notif.notification.notificationDetails.length-1 > 50 ?
             '...' : '') :null }}
           </a></p>
@@ -62,9 +64,9 @@
       Paramètre
     </x> -->
     <ul class="list-group list-group-flush">
+      <li class="list-group-item" style=""> <a href="" routerLink="/decaissement" class="switch-item">Decaissement</a></li>
       <li class="list-group-item" style=""> <a href="" routerLink="/profil" class="switch-item">Mon profil</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/decaissement" class="switch-item">Mode utilisateur</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur" class="switch-item">Moderateur</a></li>
+      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="" routerLink="/moderateur" class="switch-item">Moderateur</a></li>
       <li class="list-group-item" style=" text-align: center">
         <button class="btn btn-danger" type="button" (click)="onSignOut()" >Déconnexion</button>
       </li>
@@ -77,8 +79,9 @@
       Paramètre
     </div> -->
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/resources" class="setting-item">Paramètre des ressources</a></li>
+      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage de compte</a></li>
+      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
       <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
     </ul>
     <!--<div class="card-footer"></div>-->

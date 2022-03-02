@@ -32,10 +32,11 @@ table td.content { width: 72%; }
 
 table.list-group-setting { width: 100%;}
 table.list-group-setting td{ color: gray; text-align: center;}
+table.list-group-setting td.col1 { padding-right: 40px}
 table.list-group-setting td.col1, table.list-group-setting td.col2{ text-align: left}
 table.list-group-setting td.col3,
 table.list-group-setting td.col4,
-table.list-group-setting td.col5{ width: 18%}
+table.list-group-setting td.col5{ width: 22%}
 table.list-group-setting .accent {font-weight: bold}
 
 table.list-group-setting td .bloc-items {min-height: 68px; margin-bottom: 20px}

@@ -2,7 +2,8 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ResponseUser} from "../models/response.interface";
 import {Router} from "@angular/router";
-import {User} from "../models/user.model";
+import {Office, Profile, User} from "../models/user.model";
+import {UserService} from "./user.service";
 
 @Injectable()
 export class AuthService {
@@ -27,9 +28,41 @@ export class AuthService {
     return false;
   }
 
-  signIn(username:string, password:string, redirectTo: string | null) {
+  isAdmin() {
+    // @ts-ignore
+    let user: User = <User>(JSON.parse(localStorage.getItem('user')));
+    return this.checkUserLevel(user, '111');
+  }
+  isModerator() {
+    // @ts-ignore
+    let user: User = <User>(JSON.parse(localStorage.getItem('user')));
+    return (this.checkUserLevel(user, '111') || this.checkUserLevel(user, '110'));
+  }
 
-    const url = 'http://localhost:8080/decaissement-api-0.0.1/user/login';
+  checkUserLevel(user: User, level: string) {
+    if (user) {
+      let office: Office[] = user.offices;
+
+      if (office) {
+        for (let j = 0; j <= office.length; j++) {
+          let profile: Profile | undefined;
+
+          if (office[j]) {
+            profile = office[j].profile
+
+            if(profile) {
+              if(profile.profileLevel===level) return true
+            }
+          }
+        }
+      }
+    }
+    return false
+  }
+
+  signIn(username:string, password:string, callback: (user:User) => void) {
+
+    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/login';
 
     let params = {
       'username' : username,
@@ -44,12 +77,10 @@ export class AuthService {
       data => {
         if (data.statusCode == "SUCCESS") {
           localStorage.setItem('user', JSON.stringify(data.response));
-          if (redirectTo!=null) {
-            this.router.navigate([redirectTo]);
-          }
         } else {
           alert("Login ou mot passe Incorrect");
         }
+        callback(data.response);
       },
       error => console.error('There was an error!', error));
   }
@@ -59,13 +90,15 @@ export class AuthService {
 
   signInById(userId: number, password: string, redirectTo:string | null) {
 
-    const url = 'http://localhost:8080/decaissement-api-0.0.1/user/'+userId;
+    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+userId;
 
     this.httpClient.get<ResponseUser>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
           if (data.response.email!=null)
-            this.signIn(data.response.email, password, redirectTo);
+            this.signIn(data.response.email, password, () => {
+              this.router.navigate(['/']);
+            });
         } else {
           alert("Erreur de création du mot de passe");
           alert('Verifiez que tous les champs son entré correctement');
@@ -76,7 +109,7 @@ export class AuthService {
 
   setPassword(userId:number, oldPassword:string, newPassword:string, redirectTo:string | null) {
 
-    const url = 'http://localhost:8080/decaissement-api-0.0.1/user/'+userId+'/setpassword';
+    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+userId+'/setpassword';
 
     let headers = new HttpHeaders({
       'Content-type': 'application/json'

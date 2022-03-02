@@ -39,11 +39,8 @@
       </div>
       <div class="mb-3 ">
         <select class="form-select" aria-label="Service" name="office" ngModel>
-          <option *ngFor="let office of offices"
-                  value="{{office.officeId}}">{{ office.officeName }}</option>
-
-          <option value="" disabled></option>
-          <option value="0"> + Ajouter un poste</option>
+          <option *ngFor="let office of offices" value="{{office.officeId}}">{{ office.officeName }}</option>
+          <option value="">+ Ajouter une fonction</option>
         </select>
       </div>
       <div class="mb-3 ">

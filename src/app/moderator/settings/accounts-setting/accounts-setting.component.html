@@ -1,12 +1,324 @@
 <app-navbar></app-navbar>
 
-<style>
-  .container {min-height: 460px}
-</style>
-
 <div class="container">
 
-  <p>reglage de comptes</p>
+  <table>
+    <tr>
+      <td class="side">
+        <h4 class="page-title">Paramètre</h4>
+
+        <div class="card left-side-card">
+          <!-- <div class="card-header">
+            Paramètre
+          </div> -->
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item current" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
+          </ul>
+          <!--<div class="card-footer"></div>-->
+        </div>
+      </td>
+
+      <td class="content">
+        <div class="setting-bloc">
+          <table class="list-group-setting">
+
+            <tbody>
+              <tr>
+                <td class="col1"><h5>Reglage de compte</h5></td>
+                <td class="col2" style="text-align: right">
+                  <p *ngIf="self.offices.length!=0">
+                    <span class="accent">Rôle: </span>
+                    <span *ngFor="let office of self.offices">{{ office.profile ? office.profile.profileName : '' }}</span>
+                  </p>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="5"><hr/></td>
+              </tr>
+
+              <tr>
+                <td class="col1">
+                  <h6>{{ self.civility + '. ' + self.lastname + ' ' + self.firstname }}</h6>
+                  <p *ngFor="let office of myOffices">
+                    <span>{{ office.officeName }}</span> <br/>
+                  </p>
+                </td>
+                <td class="col2">
+                  <p><a href="" routerLink="./">Modifier mes informations personnelles</a><br/>
+                  <a href="" style="color: gray;"routerLink="./" >Supprimer mon compte</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="col1">
+                  <p>
+                    <span>{{ self.email }}</span> <br/>
+                    <span>{{ self.mobile }}</span>
+                  </p>
+                </td>
+                <td class="col2" colspan="2"><a href="">Modifier l'adresse e-mail</a> <br/>
+                  <a href="" routerLink="./">Changer mon numéro de téléphone</a></td>
+              </tr>
+
+              <tr>
+                <td class="col1">
+                  <p *ngFor="let office of myOffices">
+                    <span>{{ office.profile ? office.profile.profileName : '' }}</span>
+                  </p>
+                </td>
+                <td class="col2"><a href="" routerLink="./">Changer mon profil</a></td>
+              </tr>
+
+              <tr>
+                <td class="col1"><p>************</p></td>
+                <td class="col2"><a href="" routerLink="./">Modifier mon mot de passe</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+
+        </div>
+      </td>
+    </tr>
+
+    <tr *ngIf="isModerator && pendingAccount.length!=0" id="toActivate">
+      <td></td>
+      <td class="content">
+        <div class="setting-bloc">
+          <table class="list-group-setting">
+
+            <tr>
+              <td class="col1"><h6>Comptes en attentes</h6></td>
+              <td class="col2" style="text-align: right">
+               <p>Activé / Supprimer</p>
+              </td>
+            </tr>
+
+            <tbody *ngFor="let user of pendingAccount">
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <h6>{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}</h6>
+                <p *ngFor="let office of user.offices"><span>{{ office.officeName }}</span> <br/>
+                </p>
+              </td>
+              <td class="col2">
+                <p>
+                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
+                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);" >Supprimer ce compte</a>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p>
+                  <span>{{ user.email }}</span> <br/>
+                  <span>{{ user.mobile }}</span>
+                </p>
+              </td>
+              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p *ngFor="let office of user.offices">
+                  <span>{{ office.profile ? office.profile.profileName : '' }}</span>
+                </p>
+              </td>
+              <td class="col2"></td>
+            </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+    </tr>
+
+    <tr *ngIf="isModerator && activeAccount.length!=0">
+      <td></td>
+      <td class="content">
+        <div class="setting-bloc">
+          <table class="list-group-setting">
+
+            <tr>
+              <td class="col1"><h6>Compte actifs</h6></td>
+              <td class="col2" style="text-align: right">
+                <p>Désactiver / Supprimer</p>
+              </td>
+            </tr>
+
+            <tbody  *ngFor="let user of activeAccount">
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <h6>{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}</h6>
+                <p *ngFor="let office of user.offices"><span>{{ office.officeName }}</span> <br/>
+                </p>
+              </td>
+              <td class="col2">
+                <p>
+                  <a href="" style="color: gray;" (click)="$event.preventDefault(); deactivateAccount(user.userId);">Désactiver ce compte</a> |
+                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p>
+                  <span>{{ user.email }}</span> <br/>
+                  <span>{{ user.mobile }}</span>
+                </p>
+              </td>
+              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p *ngFor="let office of user.offices">
+                  <span>{{ office.profile ? office.profile.profileName : '' }}</span>
+                </p>
+              </td>
+              <td class="col2"></td>
+            </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+    </tr>
+
+
+    <tr *ngIf="isModerator && disabledAccount.length!=0">
+      <td></td>
+      <td class="content">
+        <div class="setting-bloc">
+          <table class="list-group-setting">
+
+            <tr>
+              <td class="col1"><h6>Comptes désactivés</h6></td>
+              <td class="col2" style="text-align: right">
+                <p>Activer / Supprimer</p>
+              </td>
+            </tr>
+
+            <tbody  *ngFor="let user of disabledAccount">
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <h6>{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}</h6>
+                <p *ngFor="let office of user.offices"><span>{{ office.officeName }}</span> <br/>
+                </p>
+              </td>
+              <td class="col2">
+                <p>
+                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
+                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p>
+                  <span>{{ user.email }}</span> <br/>
+                  <span>{{ user.mobile }}</span>
+                </p>
+              </td>
+              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p *ngFor="let office of user.offices">
+                  <span>{{ office.profile ? office.profile.profileName : '' }}</span>
+                </p>
+              </td>
+              <td class="col2"></td>
+            </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+    </tr>
+
+
+    <tr *ngIf="isModerator && deletedAccount.length!=0">
+      <td></td>
+      <td class="content">
+        <div class="setting-bloc">
+          <table class="list-group-setting">
+
+            <tr>
+              <td class="col1"><h6>Comptes supprimés</h6></td>
+              <td class="col2" style="text-align: right">
+                <p>Activer</p>
+              </td>
+            </tr>
+
+            <tbody  *ngFor="let user of deletedAccount">
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <h6>{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}</h6>
+                <p *ngFor="let office of user.offices"><span>{{ office.officeName }}</span> <br/>
+                </p>
+              </td>
+              <td class="col2">
+                <p>
+                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p>
+                  <span>{{ user.email }}</span> <br/>
+                  <span>{{ user.mobile }}</span>
+                </p>
+              </td>
+              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+            </tr>
+
+            <tr>
+              <td class="col1">
+                <p *ngFor="let office of user.offices">
+                  <span>{{ office.profile ? office.profile.profileName : '' }}</span>
+                </p>
+              </td>
+              <td class="col2"></td>
+            </tr>
+
+            </tbody>
+
+          </table>
+        </div>
+    </tr>
+
+  </table>
 
 </div>
 

@@ -13,6 +13,8 @@ import {DisbursService} from "../services/disburs.service";
 export class AppComponent implements OnInit {
 
   title = 'Banamur Decaissement';
+
+  user: User = new User();
   users: User[] | undefined = new Array<User>();
   moderator: User[] | undefined = new Array<User>();
 
@@ -21,10 +23,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserList((data)=>{
-      this.moderator = this.userService.sortUsersByLevel(data, ['111', '110']);
-      this.users = this.userService.sortUsersByLevel(data, ['000']);
-    });
+
   }
 
 }

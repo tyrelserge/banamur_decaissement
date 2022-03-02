@@ -48,22 +48,43 @@
           <td class="col3">
             <div class="mb-3">
               <input type="text" name="applicant" class="form-control recipient readonly" readonly
-                     placeholder = "{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}">
+                     ngModel placeholder = "{{ user.civility + '. ' + user.lastname + ' ' + user.firstname }}">
 
-              <select class="form-select" name="for" aria-label="Selectionnez"
-                      ngModel="{{ user.userId }}" [hidden]="!showSelectBeneficiary">
-
-                <option [selected]="!showSelectBeneficiary" value=""></option>
-                <option *ngFor="let b of users;" value="{{ b.userId }}" >{{ b.civility + '. ' + b.lastname + ' ' + b.firstname }}</option>
-
+              <select class="form-select" name="for" (change)="onDisplaySelectedBeneficiaryField(disbursForm)"
+                      ngModel="" [multiple]="!showSelectedBeneficiary" [hidden]="!showSelectBeneficiary">
+                <option *ngFor="let b of searchResult;" value="{{ b.userId }}" >{{ b.civility + '. ' + b.lastname + ' ' + b.firstname }}</option>
               </select>
+
+              <div class="input-group mb-3">
+                <select class="form-select" name="civility" ngModel style="width: 10px;"
+                      ngModel [hidden]="!showInputBeneficiary">
+                  <option value="M">M.</option>
+                  <option value="Mme">Mme.</option>
+                  <option value="Mlle">Mlle.</option>
+                </select>
+
+                <input type="search" name="provider"  class="form-control" placeholder="Nom et Prénoms" autocomplete="off"
+                     ngModel [hidden]="!showInputBeneficiary" (input)="onDisplaySelectBeneficiary(disbursForm);" style="width:200px">
+
+                <input type="text" name="mobile"  class="form-control" placeholder="Mobile" autocomplete="off"
+                       ngModel [hidden]="!showInputBeneficiary" style="width:100px">
+              </div>
+              <!--
+              <optgroup label="US">
+                <option value="">test 1</option>
+                <option value="">test 2</option>
+                <option value="">test 3</option>
+              </optgroup>
+              -->
 
             </div>
           </td>
           <td class="col4" style="vertical-align: bottom; padding-bottom: 15px">
-            <a href="#" routerLink="./" (click)="onDisplaySelectBeneficiary()">
-              <span [hidden]="showSelectBeneficiary">Modifier</span>
-            </a><a href="/decaissement/budgsector/{{ budgsector.budgsectorId }}/demande" [hidden]="!showSelectBeneficiary">Annuler</a></td>
+            <a href="#" routerLink="./" (click)="onDisplayInputBeneficiary(disbursForm);">
+              <span [hidden]="showSelectBeneficiary">Changer</span>
+              <span [hidden]="!showSelectBeneficiary">Annuler</span>
+            </a>
+          </td>
         </tr>
 
         <tr>
@@ -71,8 +92,8 @@
           <td class="col2">Montant cumulé  :</td>
           <td class="col3">
             <div class="mb-3">
-              <input type="text" name="totalamount" class="form-control amount readonly" readonly placeholder="0"
-              ngModel="{{ cumulateAmount }}">
+              <input type="text" name="totalamount" class="form-control amount readonly"
+                     readonly placeholder="0" ngModel="{{ cumulateAmount }}" required>
             </div>
           </td>
           <td class="col4"><span>XOF</span></td>
@@ -101,29 +122,66 @@
           <td class="col1">Motif :</td>
           <td colspan="2">
             <div class="mb-3">
-              <textarea name="reason" ngModel class="form-control" id="" rows="2"></textarea>
+              <textarea name="reason" ngModel class="form-control" rows="2"></textarea>
             </div>
           </td>
-          <td colspan="2"><button class="btn btn-light" type="button">+<br/>Détails</button></td>
+          <td colspan="2">
+            <button class="btn btn-light" type="button" (click)="displayDetailsFields(disbursForm, reasonForm)">+<br/>Détailler</button>
+          </td>
         </tr>
 
-        <tr>
+        <tr [hidden]="!showDetailsFields">
+
+          <td class="col1"></td>
+          <td colspan="3">
+            <div class="mb-3" style="border-left: 1px solid #ced4da; padding-left: 10px">
+
+              <table class="reseonsitem">
+
+                <tr>
+                  <td  class="itm1" colspan="4"></td>
+                </tr>
+
+                <tr style="font-weight: bold; border-bottom: 1px solid #ced4da">
+                  <td class="itm1" colspan="">Désignation</td>
+                  <td class="itm2" colspan="">Qté</td>
+                  <td class="itm3" colspan="">Prix unitaire</td>
+                  <td class="itm4" colspan="">Prix total</td>
+                </tr>
+
+                <tr *ngFor="let reason of reasons">
+                  <td class="itm1">{{ reason.designation!=null ? reason.designation : '-' }}</td>
+                  <td class="itm2">{{ reason.quatity!=null ? reason.quatity : '-' }}</td>
+                  <td class="itm3">{{ reason.unitprice!=null ? reason.unitprice : '-' }}</td>
+                  <td class="itm4">{{ reason.totalprice!=null ? reason.totalprice : '-' }}</td>
+                </tr>
+
+              </table>
+            </div>
+          </td>
+        </tr>
+
+        <tr [hidden]="!showDetailsFields">
+          <td class="col1"></td>
+          <td colspan="3">
+            <form (ngSubmit)="onReasonSubmit(reasonForm)" #reasonForm="ngForm">
+              <div class="input-group mb-3 details-fields">
+                <input type="text" name="designation" ngModel class="form-control" placeholder="Désignation" style="width:220px" required>
+                <input type="text" name="unity" ngModel class="form-control" placeholder="... m²/cm/L" style="width:60px">
+                <input type="number" name="qte" ngModel class="form-control" placeholder="Qte" style="width:40px; text-align: center" required>
+                <input type="number" name="unitprice" ngModel class="form-control" placeholder="Prix U." style="width:60px" required>
+                <button class="btn btn-outline-primary" [disabled]="reasonForm.invalid" type="submit">Ajouter</button>
+              </div>
+            </form>
+          </td>
+        </tr>
+
+        <tr [hidden]="showDetailsFields">
           <td class="col1">Montant :</td>
           <td colspan="3"><div class="mb-3">
             <input type="text" name="amount" class="form-control" [(ngModel)]="cumulateAmount" placeholder="0" required>
           </div></td>
         </tr>
-
-        <!--
-        <tr>
-          <td class="col1"></td>
-          <td class="col2">
-            <button class="btn btn-light" type="button">+ Ajouter un motif</button>
-          </td>
-          <td class="col3" colspan="2" style="text-align: left">
-
-          </td>
-        </tr>  -->
 
         <tr>
           <td colspan="4"><hr></td>

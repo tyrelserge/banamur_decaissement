@@ -23,7 +23,9 @@ export class SigninComponent implements OnInit {
   }
 
   onSubmitConnexion(form: NgForm) {
-    this.authService.signIn(form.value['username'], form.value['password'], '/');
+    this.authService.signIn(form.value['username'], form.value['password'], ()=>{
+      this.router.navigate(['/']);
+    });
   }
 
 }

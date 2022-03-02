@@ -71,13 +71,22 @@ text-align: right;
 width: 10%; text-align: right;
 }
 
-.body-content table td input, .body-content table td select, .body-content table td textarea {
+.body-content table td input,
+.body-content table td select,
+.body-content table td textarea {
 margin: 5px 0;
 }
 
-.body-content table td input.readonly{background: lightgray;}
+.body-content table td .details-fields button {
+  height: 38px; top: 5px;
+}
 
+.body-content table td input.readonly{background: lightgray;}
 .body-content table td input, .body-content table td select {}
+
+table.reseonsitem{min-height: 60px; margin: 20px 0 20px 0; width: 100%; }
+table.reseonsitem td.itm4, table.reseonsitem td.itm3{width: 25%; text-align: right}
+table.reseonsitem td.itm2{width: 10%; text-align: center}
 
 
 a, a:visited, a:hover { text-decoration: none; }

@@ -5,10 +5,10 @@ import {HttpClient} from "@angular/common/http";
 import {BudgetIndex, BudgetSecteur} from "../../../../models/budget.model";
 import {NgForm} from "@angular/forms";
 import {BudgetService} from "../../../../services/budget.service";
-import {NotifUser, User} from "../../../../models/user.model";
+import {User} from "../../../../models/user.model";
 import {UserService} from "../../../../services/user.service";
 import {DisbursService} from "../../../../services/disburs.service";
-import {NavbarComponent} from "../../../navbar/navbar.component";
+import {ReasonItems} from "../../../../models/disburs.model";
 
 @Component({
   selector: 'app-disbursement',
@@ -20,14 +20,23 @@ export class DisbursementComponent implements OnInit {
   today = new Date();
 
   user:User = new User();
-  users:User[] | undefined = new Array<User>();
+  users:User[] = new Array<User>();
 
   budgsector:BudgetSecteur = new BudgetSecteur();
   budgetIndex: BudgetIndex[] = new Array<BudgetIndex>();
 
   numregister: string | undefined;
+  cumulateAmount: number = 0;
+
+  showInputBeneficiary:  boolean = false;
   showSelectBeneficiary: boolean = false;
-  cumulateAmount: number | undefined;
+  showSelectedBeneficiary: boolean = false;
+
+  showDetailsFields: boolean = false;
+
+  reasons: ReasonItems[] = new Array<ReasonItems>();
+  reasonIds: number[] = new Array();
+  searchResult: User[] | undefined;
 
   constructor(private authService: AuthService,
               private activeRoute: ActivatedRoute,
@@ -39,7 +48,7 @@ export class DisbursementComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.authService.isAuth()) return;
+    if (!this.authService.isAuth()) this.router.navigate(['/']);
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
     // @ts-ignore
@@ -52,7 +61,7 @@ export class DisbursementComponent implements OnInit {
     });
     this.budgetService.getBugdetIndexList((data) => this.hydrateBudgetIndex(data));
     this.userService.getUserList((data)=>{
-      this.users = this.userService.sortUsersByLevel(data, ['000']);
+      this.users = data; //this.userService.sortUsersByLevel(data, ['000']);
     });
   }
 
@@ -76,18 +85,76 @@ export class DisbursementComponent implements OnInit {
     }
   }
 
-  onDisplaySelectBeneficiary() {
-    this.showSelectBeneficiary = !this.showSelectBeneficiary;
+  onDisplayInputBeneficiary(disbursForm: NgForm) {
+    this.showInputBeneficiary = !this.showInputBeneficiary;
+    this.showSelectedBeneficiary = false;
+    if(!this.showInputBeneficiary) {
+      this.showSelectBeneficiary = false;
+    }
+    disbursForm.controls['provider'].reset();
+    disbursForm.controls['for'].reset();
+  }
+
+  onDisplaySelectBeneficiary(disbursForm:NgForm) {
+    this.showSelectBeneficiary = true;
+    this.showSelectedBeneficiary = false;
+    disbursForm.controls['for'].reset();
+
+    if (disbursForm.controls['provider'].value!='' && disbursForm.controls['provider'].value!=null ) {
+      this.userService.lookForuserbyname(disbursForm.controls['provider'].value, (users:User[])=> {
+      this.searchResult = users;
+    });
+    } else {
+      this.searchResult = this.users;
+    }
+  }
+
+  onDisplaySelectedBeneficiaryField(disbursForm: NgForm) {
+    this.showInputBeneficiary = false;
+    this.showSelectedBeneficiary = true;
+    disbursForm.controls['provider'].reset();
   }
 
   cumulativeAmount() {
-    this.cumulateAmount = 0;
+
+  }
+
+  onReasonSubmit(reasonForm: NgForm) {
+    this.disbursService.addDisbursementReason(reasonForm, (reason: ReasonItems)=>{
+      this.reasons.push(reason);
+      this.cumulateAmount += <number>reason.totalprice;
+      if (reason.reasonitemId != null) {
+        this.reasonIds.push(reason.reasonitemId);
+      }
+      reasonForm.resetForm();
+    });
   }
 
   onSubmitDisbursment(disbursForm: NgForm) {
-    this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, () => {
-      this.router.navigate(['/decaissement/historique']);
-    });
+    if (disbursForm.value['provider']!=null && disbursForm.value['provider']!='') {
+      this.userService.addProviderUser(disbursForm.value['civility'], disbursForm.value['provider'], disbursForm.value['mobile'], (user:User)=>{
+        disbursForm.controls['for'].setValue(user.userId);
+        console.log(disbursForm.value);
+        this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
+          this.router.navigate(['/decaissement/historique']);
+        });
+      });
+    } else {
+      this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
+        this.router.navigate(['/decaissement/historique']);
+      });
+    }
+  }
+
+  displayDetailsFields(disbursForm:NgForm, reasonForm:NgForm) {
+    this.showDetailsFields = !this.showDetailsFields;
+    if(this.showDetailsFields) {
+      disbursForm.controls['amount'].reset();
+    } else {
+      reasonForm.resetForm();
+      this.reasons = [];
+      this.reasonIds = [];
+    }
   }
 
 }

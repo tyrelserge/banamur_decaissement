@@ -3,8 +3,9 @@ import {NgForm} from "@angular/forms";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ResponseInterface} from "../models/response.interface";
 import {UserService} from "./user.service";
-import {Disbursement, ValidationAction} from "../models/disburs.model";
+import {Disbursement, ReasonItems, ValidationAction} from "../models/disburs.model";
 import {Router} from "@angular/router";
+import {User} from "../models/user.model";
 
 @Injectable()
 export class DisbursService {
@@ -13,9 +14,11 @@ export class DisbursService {
               private userService: UserService,
               private router: Router) {}
 
-  addDisbursmentRequest(userId:number | undefined, form: NgForm, callback: (response: Disbursement) => void) {
+  addDisbursmentRequest(userId:number | undefined, form: NgForm, reasonIds:number[], callback: (response: Disbursement) => void) {
 
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/request';
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/request';
+
+    let recipient = form.value['for'][0]!=null && form.value['for'][0]!='' ? form.value['for'][0] : form.value['for'];
 
     let params = {
       'budgindexId': form.value['budgetIndex'],
@@ -23,20 +26,21 @@ export class DisbursService {
       'identifier': form.value['numero'],
       'reason': form.value['reason'],
       'amountRequested': form.value['totalamount'],
-      'recipientId': form.value['for']!='' ? form.value['for'] : userId,
+      'recipientId': recipient!=null ? recipient : userId,
       'status': 'submitted',
-      'reasonItems': []
-    }
+      'reasonItemsIds': reasonIds
+    };
 
     let headers = new HttpHeaders({
       'Content-type': 'application/json'
-    })
+    });
+
 
 
     this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
       data => {
         if (data.statusCode=='SUCCESS') {
-          this.userService.sendNotification(data.response.userId, 4, 5);
+          this.userService.sendNotification(data.response.userId, 4, 5, '/moderateur/pending-requetes');
           this.userService.sendDisbursmentMail(data.response);
           callback(data.response);
         } else if (data.statusCode=='ALREADY_EXISTS') {
@@ -47,55 +51,83 @@ export class DisbursService {
       },
       error => console.error('There was an error!', error));
   }
+  addDisbursementReason(form: NgForm, callback: (reason: ReasonItems) => void) {
 
-  getUserDisbursementList(userId: number | undefined, callback: (disburs: Disbursement[]) => void) {
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/request/reason';
 
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/user/' + userId + '/requests';
+    let designation = form.value['unity']!=null ?
+      form.value['designation'] +' ('+ form.value['unity']+')' : form.value['designation'];
 
-    this.httpClient.get<ResponseInterface>(url).subscribe(
+    let params = {
+      'debursementId': null,
+      'designation': designation,
+      'quatity': form.value['qte'],
+      'unitprice': form.value['unitprice'],
+      'status': "active"
+    }
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json'
+    })
+
+
+    this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
       data => {
         if (data.statusCode=='SUCCESS') {
-          callback(data.response);
+
         } else {
-          console.error('Une erreur s\'est produite');
+          console.error('Verifiez que tous les champs son entré correctement');
         }
-      },
-      error => console.error('There was an error!', error));
-  }
-
-  getDisbursementRequest(disbursementId: number, callback: (disburs: Disbursement) => void) {
-
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/request/' + disbursementId;
-
-    this.httpClient.get<ResponseInterface>(url).subscribe(
-      data => {
-        if (data.statusCode=='SUCCESS') {
-          callback(data.response);
-        } else {
-          console.error('Une erreur s\'est produite');
-        }
-      },
-      error => console.error('There was an error!', error));
-  }
-
-  getPendingDisbursements(callback: (disburs: Disbursement[]) => void) {
-
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/requests/waiting';
-
-    this.httpClient.get<ResponseInterface>(url).subscribe(
-      data => {
-        if (data.statusCode=='SUCCESS') {
-          callback(data.response);
-        } else {
-          console.error('Une erreur s\'est produite');
-        }
+        callback(data.response);
       },
       error => console.error('There was an error!', error));
   }
 
   getAllDisbursements(callback: (disburs: Disbursement[]) => void) {
 
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/requests';
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/requests';
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          callback(data.response);
+        } else {
+          console.error('Une erreur s\'est produite');
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  getUserDisbursementList(userId: number | undefined, callback: (disburs: Disbursement[]) => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/user/' + userId + '/requests';
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          callback(data.response);
+        } else {
+          console.error('Une erreur s\'est produite');
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  getDisbursementRequest(disbursementId: number, callback: (disburs: Disbursement) => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/request/' + disbursementId;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          callback(data.response);
+        } else {
+          console.error('Une erreur s\'est produite');
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  getPendingDisbursements(callback: (disburs: Disbursement[]) => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/requests/waiting';
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -111,7 +143,7 @@ export class DisbursService {
   setValidationDisbursement(userId: number | undefined, limitStep: number,
                             disbursement: Disbursement, valForm: NgForm, callback: (data: any) => void) {
 
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/disbusement/validation/request/' + disbursement.debursementId;
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/validation/request/' + disbursement.debursementId;
 
     let noticeClaimant = 7;
     let noticeAdmins = 9;
@@ -158,7 +190,7 @@ export class DisbursService {
     this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
       data => {
         if (data.statusCode=='SUCCESS') {
-          this.userService.sendNotification(data.response.userId, noticeClaimant, noticeAdmins);
+          this.userService.sendNotification(data.response.userId, noticeClaimant, noticeAdmins, '/');
           this.userService.sendValidationMail(data.response);
           callback(data.response);
         } else if (data.statusCode=='ALREADY_EXISTS') {
@@ -169,7 +201,6 @@ export class DisbursService {
       },
       error => console.error('There was an error!', error));
   }
-
   treatedValidation(userId: number | undefined, disbursements: Disbursement[], callback: (data: any) => void) {
     let treated = false;
     for (let disburs of disbursements) {
@@ -181,8 +212,6 @@ export class DisbursService {
     }
     callback(treated);
   }
-
-
   loadValidationChain(validations: ValidationAction[], callback: (validationChain: any[]) => void) {
 
     let validator: string = '';
@@ -206,4 +235,5 @@ export class DisbursService {
     }
     callback(validationChain)
   }
+
 }

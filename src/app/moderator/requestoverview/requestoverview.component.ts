@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Disbursement, ValidationAction} from "../../../models/disburs.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DisbursService} from "../../../services/disburs.service";
 import {UserService} from "../../../services/user.service";
 import {Departement, Office, User} from "../../../models/user.model";
+import {AuthService} from "../../../services/auth.service";
 
 @Component({
   selector: 'app-requestoverview',
@@ -19,11 +20,14 @@ export class RequestoverviewComponent implements OnInit {
 
   limitStep: number = 3;
 
-  constructor(private activeRoute: ActivatedRoute,
+  constructor(private authService: AuthService,
+              private router: Router,
+              private activeRoute: ActivatedRoute,
               private disbursService: DisbursService,
               private userService: UserService) { }
 
   ngOnInit(): void {
+    if (!this.authService.isModerator()) this.router.navigate(['/']);
 
     const disbursId = this.activeRoute.snapshot.params['disbursid'];
     this.disbursService.getDisbursementRequest(disbursId, (disbursement) => {

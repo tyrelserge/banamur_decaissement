@@ -3,6 +3,7 @@ import {Disbursement} from "../../../models/disburs.model";
 import {DisbursService} from "../../../services/disburs.service";
 import {User} from "../../../models/user.model";
 import {AuthService} from "../../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-requestpending',
@@ -25,10 +26,12 @@ export class RequestpendingComponent implements OnInit {
 
   treated: boolean = false;
 
-  constructor(private authService: AuthService, private disbursService: DisbursService) { }
+  constructor(private authService: AuthService,
+              private router: Router,
+              private disbursService: DisbursService) { }
 
   ngOnInit(): void {
-    if (!this.authService.isAuth()) return;
+    if (!this.authService.isModerator()) this.router.navigate(['/']);
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
     this.disbursService.getPendingDisbursements((disbursements) => {

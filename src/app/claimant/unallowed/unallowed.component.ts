@@ -11,6 +11,8 @@ import {UserService} from "../../../services/user.service";
 })
 export class UnallowedComponent implements OnInit {
 
+  user: User = new User();
+
   constructor(private authService: AuthService,
               private router:Router,
               private userService: UserService) { }
@@ -23,6 +25,9 @@ export class UnallowedComponent implements OnInit {
     } else {
       this.router.navigate(['/']);
     }
+
+    // @ts-ignore
+    this.user = <User>(JSON.parse(localStorage.getItem('user')));
   }
 
   onSendSignupMail() {

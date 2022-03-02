@@ -31,14 +31,15 @@ import { ProfilePreviewComponent } from './profile/profile-preview/profile-previ
 import { ResourcesSettingComponent } from './moderator/settings/resources-setting/resources-setting.component';
 import { AccountsSettingComponent } from './moderator/settings/accounts-setting/accounts-setting.component';
 import { GeneralSettingComponent } from './moderator/settings/general-setting/general-setting.component';
+import { DepartmentSettingComponent } from './moderator/settings/department-setting/department-setting.component';
 
 const appRoutes: Routes = [
 
   { path: 'connexion', component: SigninComponent },
   { path: 'inscription', component: SignupComponent },
   { path: 'unallowed', component: UnallowedComponent },
-  { path: 'profil', canActivate:[GuardService], component: ProfilePreviewComponent },
 
+  { path: 'profil', canActivate:[GuardService], component: ProfileComponent },
   { path: 'profil/settings', canActivate:[GuardService], component: ProfileSettingsComponent },
 
   { path: 'decaissement', canActivate:[GuardService], component: ClaimantComponent },
@@ -49,18 +50,19 @@ const appRoutes: Routes = [
   { path: '', canActivate:[GuardService], component: ValidatorComponent },
   { path: 'moderateur', redirectTo: 'moderateur/dashbord'},
   { path: 'moderateur/dashbord', canActivate:[GuardService], component: ValidatorComponent },
-
-  { path: 'moderateur/reglage', redirectTo: 'moderateur/reglage/general'},
-  { path: 'moderateur/reglage/general', canActivate:[GuardService], component: GeneralSettingComponent },
-  { path: 'moderateur/reglage/comptes', canActivate:[GuardService], component: AccountsSettingComponent },
-  { path: 'moderateur/reglage/ressources', canActivate:[GuardService], component: ResourcesSettingComponent },
-
   { path: 'moderateur/pending-requetes', canActivate:[GuardService], component: RequestpendingComponent },
   { path: 'moderateur/pending-requetes/requete/:disbursid/processing', canActivate:[GuardService], component: ProcessrequestComponent },
   { path: 'moderateur/requete/:disbursid', canActivate:[GuardService], component: RequestoverviewComponent },
 
+  { path: 'moderateur/reglage', redirectTo: 'moderateur/reglage/general'},
+  { path: 'moderateur/reglage/general', canActivate:[GuardService], component: GeneralSettingComponent },
+  { path: 'moderateur/reglage/comptes', canActivate:[GuardService], component: AccountsSettingComponent },
+  { path: 'moderateur/reglage/roles', canActivate:[GuardService], component: DepartmentSettingComponent },
+  { path: 'moderateur/reglage/ressources', canActivate:[GuardService], component: ResourcesSettingComponent },
+
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }
+
 ]
 
 @NgModule({
@@ -86,6 +88,7 @@ const appRoutes: Routes = [
     ResourcesSettingComponent,
     AccountsSettingComponent,
     GeneralSettingComponent,
+    DepartmentSettingComponent,
   ],
   imports: [
     BrowserModule,

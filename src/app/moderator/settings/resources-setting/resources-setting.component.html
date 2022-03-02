@@ -1,12 +1,117 @@
 <app-navbar></app-navbar>
 
-<style>
-  .container {min-height: 460px}
-</style>
-
 <div class="container">
 
-  <p>Reglage des ressources</p>
+  <table>
+    <tr>
+      <td class="side">
+        <h4 class="page-title">Paramètre</h4>
+
+        <div class="card left-side-card">
+          <!-- <div class="card-header">
+            Paramètre
+          </div> -->
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
+            <li class="list-group-item current" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
+            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
+          </ul>
+          <!--<div class="card-footer"></div>-->
+        </div>
+      </td>
+
+      <td class="content">
+        <div class="setting-bloc">
+
+
+          <table class="list-group-setting">
+            <tr>
+              <td class="col1" colspan="3"><h5>Ressources</h5></td>
+              <td class="col2" colspan="2" style="text-align: right"><span class="accent">Rôle: </span> Administrateur</td>
+            </tr>
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1"><span class="accent">Secteur budgetaire</span></td>
+              <td class="col2" colspan="4">
+                <div class="bloc-items">
+                  <span class="item">Bureau <a class="del" href="">X</a> </span>
+                  <span class="item">Chartier  <a class="del" href="">X</a></span>
+                  <span class="item">Atelier <a class="del" href="">X</a></span>
+                </div>
+                <form>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Secteur">
+                    <button class="btn btn-outline-primary" type="submit">Ajouter</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="5"><hr/></td>
+            </tr>
+
+            <tr>
+              <td class="col1" rowspan="3"><span class="accent">Indices budgetaires</span></td>
+              <td class="col2">Bureau</td>
+              <td class="col2" colspan="3">
+                <div class="bloc-items">
+
+                </div>
+
+                <form>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Indice de bureau" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-primary" type="button">Ajouter</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col2">Chantier</td>
+              <td class="col2" colspan="3">
+                <div class="bloc-items">
+
+                </div>
+
+                <form>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Indice de chantier" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-primary" type="button">Ajouter</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col2">Garrage</td>
+              <td class="col2" colspan="3">
+                <div class="bloc-items">
+
+                </div>
+
+                <form>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Indice de garrage" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-primary" type="button">Ajouter</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+
+          </table>
+
+        </div>
+      </td>
+
+    </tr>
+  </table>
 
 </div>
 

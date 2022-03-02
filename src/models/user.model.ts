@@ -23,7 +23,7 @@ export class Profile {
 
 export class Office {
 
-  officeId:number | undefined;
+  officeId: number | undefined;
   userId: number | undefined;
   departmentId: number  | undefined;
   officeName: string | undefined;
@@ -64,4 +64,5 @@ export class NotifUser {
   notification: Notification = new Notification();
   notificationDate: string | undefined;
   notificationOpened: string | undefined;
+  notificationLink: string | undefined
 }

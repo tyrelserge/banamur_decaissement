@@ -27,22 +27,9 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.isAuth = this.authService.isAuth();
     if (this.isAuth) this.router.navigate(['/']);
-    this.getOffichesList();
-  }
-
-  getOffichesList() {
-
-    let url = "http://localhost:8080/decaissement-api-0.0.1/user/offices";
-
-    this.httpClient.get<ResponseInterface>(url).subscribe(
-      data => {
-        if (data.statusCode=="SUCCESS") {
-          this.offices = data.response
-        } else {
-          console.error('unknow error');
-        }
-      },
-      error => console.error('There was an error!', error));
+    this.userService.getOfficesList((offices) => {
+      this.offices = offices
+    });
   }
 
   onSubmitSignup(form: NgForm) {

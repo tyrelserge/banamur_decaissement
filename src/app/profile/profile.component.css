@@ -1,0 +1,44 @@
+.container {min-height: 460px}
+
+table{width: 100%; height: 100%;}
+table td.side { width: 26%; vertical-align: top; }
+table td.content { width: 72%; }
+
+/*table td{ border:1px solid #4F6064} */
+
+.page-title {
+  display:inline-block; margin-top: 46px; color:#4F6064; font-weight: bold;
+}
+
+.side .left-side-card{
+  width: 240px; margin-top: 40px;
+}
+
+.side .left-side-card a.setting-item {
+  display: inline-block; width: 100%; height: 100%; color: #4F6064;
+}
+
+.side .left-side-card a.setting-item:hover {
+  color: #0056a9;
+}
+
+.current{font-weight: bold}
+
+.setting-bloc { width: 100%; min-height: 80px; float: right; border-radius: 10px; margin-top: 60px; padding: 20px;
+  -webkit-box-shadow: 0px 0px 8px lightgray;
+  -moz-box-shadow: 0px 0px 8px lightgray;
+  box-shadow: 0px 0px 8px lightgray;
+}
+
+table.list-group-setting { width: 100%;}
+table.list-group-setting td{ color: gray; text-align: center;}
+table.list-group-setting td.col1, table.list-group-setting td.col2{
+  text-align: left; vertical-align: top;}
+table.list-group-setting td.col3,
+table.list-group-setting td.col4,
+table.list-group-setting td.col5{ width: 18%;  vertical-align: top;}
+table.list-group-setting .accent {font-weight: bold}
+
+
+a, a:visited, a:hover { text-decoration: none; }
+a:hover {}

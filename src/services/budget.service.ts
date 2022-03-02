@@ -10,7 +10,7 @@ export class BudgetService {
 
   getSelectedSector(id: number | undefined, callback: (budgsector: BudgetSecteur) => void) {
 
-    let url = "http://localhost:8080/decaissement-api-0.0.1/budget/sector";
+    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sector";
     let budgetSector:any = new BudgetSecteur();
 
     this.httpClient.get<ResponseInterface>(url + '/' + id).subscribe(
@@ -29,7 +29,7 @@ export class BudgetService {
 
   getBugdetIndexList(callback:(budgetIndex: BudgetIndex) => void) {
 
-    let url = "http://localhost:8080/decaissement-api-0.0.1/budget/budgetindexs";
+    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindexs";
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -46,7 +46,7 @@ export class BudgetService {
 
   getBugdetIndex(budgindexId: number | undefined, callback:(budgetIndex: BudgetIndex) => void) {
 
-    let url = 'http://localhost:8080/decaissement-api-0.0.1/budget/budgetindex/' + budgindexId;
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindex/' + budgindexId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {

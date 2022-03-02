@@ -32,7 +32,7 @@ export class ProcessrequestComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    if (!this.authService.isAuth()) return;
+    if (!this.authService.isModerator()) this.router.navigate(['/']);
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
     const id = this.activeRoute.snapshot.params['disbursid'];

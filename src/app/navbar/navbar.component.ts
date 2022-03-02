@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {User, NotifUser} from "../../models/user.model";
-import {ResponseInterface} from "../../models/response.interface";
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "../../services/user.service";
 
@@ -13,10 +12,10 @@ import {UserService} from "../../services/user.service";
 })
 export class NavbarComponent implements OnInit {
 
-  user: User | undefined;
+  user: User = new User;
   userNotfs: NotifUser[] | undefined;
 
-  moderator: User[] | undefined = new Array<User>();
+  isModerator: boolean = false;
 
   showNotice: boolean = false;
   switchMode: boolean = false;
@@ -28,13 +27,10 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.authService.isAuth()) return;
-      // @ts-ignore
-      this.user = <User>(JSON.parse(localStorage.getItem('user')));
-      this.userService.getUserList((data)=>{
-        this.moderator = this.userService.sortUsersByLevel(data, ['111', '110']);
-      });
-      this.loadUserNotification(this.user.userId);
+    this.isModerator = this.authService.isModerator();
+    // @ts-ignore
+    this.user = <User>(JSON.parse(localStorage.getItem('user')));
+    this.loadUserNotification(this.user.userId);
   }
 
   onSignOut() {
@@ -66,8 +62,8 @@ export class NavbarComponent implements OnInit {
     this.userService.goToNotificationLink(notificationId, (userId) => {
       this.onDisplayNotice();
       this.loadUserNotification(userId);
+      if (redirectTo!=undefined) this.router.navigate([redirectTo]);
     });
-    if (redirectTo!=undefined) this.router.navigate([redirectTo]);
   }
 
   onDisplayNotice() {

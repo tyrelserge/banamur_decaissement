@@ -24,16 +24,15 @@ export class ClaimantrequestComponent implements OnInit {
               private budgetService: BudgetService) { }
 
   ngOnInit(): void {
-    if (this.authService.isAuth()) {
-      // @ts-ignore
-      this.user = <User>(JSON.parse(localStorage.getItem('user')));
-      this.disbursService.getUserDisbursementList(this.user.userId, (data) =>{
-        for(let i of data) {
-          this.disbursements.push(i)
-        }
-        this.countStatus(data);
-      });
-    }
+
+    // @ts-ignore
+    this.user = <User>(JSON.parse(localStorage.getItem('user')));
+    this.disbursService.getUserDisbursementList(this.user.userId, (data) =>{
+      for(let i of data) {
+        this.disbursements.push(i)
+      }
+      this.countStatus(data);
+    });
   }
 
   countStatus(disbursements: Disbursement[]) {
