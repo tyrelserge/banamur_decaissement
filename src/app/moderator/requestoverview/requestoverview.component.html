@@ -1,11 +1,19 @@
 <app-navbar></app-navbar>
 <div class="container">
   <h5 class="page-title">Mes décaissements </h5>
-  <div class="requests-access"><a href="/moderateur/pending-requetes">Retour aux requêtes</a></div>
+  <div class="requests-access"><a href="#" routerLink="/moderateur/pending-requetes">Retour aux requêtes</a></div>
 
   <div class="request-item">
 
-    <h6 style="margin-bottom: 20px">Décaissement N°: <span> {{ disbursement.identifier }} </span></h6>
+    <h6 style="margin-bottom: 20px">Décaissement N°:
+      <span *ngFor="let bindex of budgetsIndex">
+        <span *ngIf="disbursement.budgindexId==bindex.budgindexId">
+         <span *ngFor="let sector of budgetsectors">
+           <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
+             {{ formatIdentifier(disbursement.createdOn,sector.budgsectorId, disbursement.identifier) }}
+           </span>
+         </span></span></span>
+    </h6>
 
     <table>
       <thead>
@@ -22,13 +30,25 @@
 
       <tbody style="height: 80px;">
       <tr>
-        <td>{{ disbursement.createdOn | date: 'd / MM / yyyy à HH:mm' }}</td>
+        <td>{{ disbursement.createdOn | date: 'dd / MM / yyyy à HH:mm' }}</td>
         <td style="text-align: left">{{ disbursement.reason }}</td>
-        <td>SECTEUR</td>
-        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disbursement.budgindexId }}</td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+            <span *ngIf="disbursement.budgindexId==bindex.budgindexId">
+             <span *ngFor="let sector of budgetsectors">
+               <span *ngIf="bindex.budgsectorId==sector.budgsectorId">{{ sector.budgsectorName }}</span>
+             </span></span></span>
+        </td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="bindex.budgindexId==disbursement.budgindexId">{{ bindex.budgindexName }}</span>
+            </span>
+        </td>
         <td style="text-align: right;">{{ disbursement.amountRequested }}</td>
         <td><span style="color: #8b2b17;">{{ disbursement.amountApproved==null ? '-' : disbursement.amountApproved }}</span></td>
-        <td><a href="/moderateur/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
+        <td><a href="#" routerLink="/moderateur/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
       </tr>
       </tbody>
     </table>

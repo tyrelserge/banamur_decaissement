@@ -32,6 +32,7 @@ import { ResourcesSettingComponent } from './moderator/settings/resources-settin
 import { AccountsSettingComponent } from './moderator/settings/accounts-setting/accounts-setting.component';
 import { GeneralSettingComponent } from './moderator/settings/general-setting/general-setting.component';
 import { DepartmentSettingComponent } from './moderator/settings/department-setting/department-setting.component';
+import { BudgetResourcesComponent } from './moderator/budget-resources/budget-resources.component';
 
 const appRoutes: Routes = [
 
@@ -47,12 +48,14 @@ const appRoutes: Routes = [
   { path: 'decaissement/budgsector/:budgsectorid/demande', canActivate:[GuardService], component: DisbursementComponent },
   { path: 'decaissement/historique/requete/:disbursid', canActivate:[GuardService], component: BrowserequestComponent },
 
-  { path: '', canActivate:[GuardService], component: ValidatorComponent },
+  { path: '', canActivate:[GuardService], component: ClaimantComponent },
   { path: 'moderateur', redirectTo: 'moderateur/dashbord'},
   { path: 'moderateur/dashbord', canActivate:[GuardService], component: ValidatorComponent },
   { path: 'moderateur/pending-requetes', canActivate:[GuardService], component: RequestpendingComponent },
   { path: 'moderateur/pending-requetes/requete/:disbursid/processing', canActivate:[GuardService], component: ProcessrequestComponent },
   { path: 'moderateur/requete/:disbursid', canActivate:[GuardService], component: RequestoverviewComponent },
+
+  { path: 'moderateur/budget/ressources', canActivate:[GuardService], component: BudgetResourcesComponent },
 
   { path: 'moderateur/reglage', redirectTo: 'moderateur/reglage/general'},
   { path: 'moderateur/reglage/general', canActivate:[GuardService], component: GeneralSettingComponent },
@@ -89,6 +92,7 @@ const appRoutes: Routes = [
     AccountsSettingComponent,
     GeneralSettingComponent,
     DepartmentSettingComponent,
+    BudgetResourcesComponent,
   ],
   imports: [
     BrowserModule,

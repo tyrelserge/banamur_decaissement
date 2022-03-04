@@ -1,14 +1,14 @@
 <nav class="navbar">
   <!-- <div class="container"> -->
 
-  <a class="navbar-brand" href="/">
+  <a class="navbar-brand" href="#" routerLink="/decaissement">
     <img src="assets/img/banamur_logo_thumb.png" class="d-inline-block align-text-top">
     <span>BANAMUR DECAISSEMENT</span>
   </a>
 
   <div class="user-resume">
 
-    <a href="#" routerLink="./" class="notice-bulle" (click)="$event.preventDefault(); onDisplayNotice()">
+    <a href="#" class="notice-bulle" (click)="$event.preventDefault(); onDisplayNotice()">
       {{ userNotfs!=undefined ? countNotif(userNotfs) : 0 }}
     </a>
 
@@ -36,7 +36,7 @@
                     [ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
                     (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
           <h6>{{ notif.notification!=null ? notif.notification.notificationSubject : null }}</h6>
-          <p><a href="" class="accent"[ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
+          <p><a href="#" class="accent"[ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
                 (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
             {{ notif.notification!=null && notif.notification.notificationDetails!=undefined ?
             notif.notification.notificationDetails.slice(0,48) + (notif.notification.notificationDetails.length-1 > 50 ?
@@ -48,9 +48,9 @@
       <li class="list-group-item" style="color: lightgray" [hidden]="userNotfs!=null">Aucune notification</li>
 
       <!--<li class="list-group-item">
-        <a href="" class="notice_item opened">
+        <a href="#" routerLink="/decaissement" class="notice_item opened">
           <h6>Nouveau compte</h6>
-          <p><a href="" class="accent">Mme Assoumou Giselle</a> attend la validation de son compte</p>
+          <p><a href="#" routerLink="/decaissement" class="accent">Mme Assoumou Giselle</a> attend la validation de son compte</p>
           <span>Date: 20/02/2022 à 20h43</span>
         </a>
       </li>
@@ -64,9 +64,9 @@
       Paramètre
     </x> -->
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" style=""> <a href="" routerLink="/decaissement" class="switch-item">Decaissement</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/profil" class="switch-item">Mon profil</a></li>
-      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="" routerLink="/moderateur" class="switch-item">Moderateur</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/decaissement" class="switch-item">Décaissement</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/budget/ressources" class="switch-item">Ressources budgétaires</a></li>
+      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="#" routerLink="/moderateur" class="switch-item">Gestion des requêtes</a></li>
       <li class="list-group-item" style=" text-align: center">
         <button class="btn btn-danger" type="button" (click)="onSignOut()" >Déconnexion</button>
       </li>
@@ -79,10 +79,10 @@
       Paramètre
     </div> -->
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage de compte</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
-      <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage de compte</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
+      <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
     </ul>
     <!--<div class="card-footer"></div>-->
   </div>

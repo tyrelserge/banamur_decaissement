@@ -3,7 +3,7 @@
 <div class="container">
 
   <h5 class="page-title">Décaissement</h5>
-  <div class="requests-access"><a href="/decaissement">Table de décaissement</a></div>
+  <div class="requests-access"><a href="#" routerLink="/decaissement">Table de décaissement</a></div>
 
   <div class="side-left">
 
@@ -32,9 +32,9 @@
         </tr>
 
         <tr>
-          <td class="col1" colspan="2">Date: {{ today | date: 'd / MM / yyyy' }}</td>
-          <td class="col3" colspan="2"><h6>N° <span>DECAISS{{ today | date: 'YY-MM/' }}{{ numregister }}</span></h6>
-              <input type="hidden" name="numero"  ngModel="DECAISS{{ today | date: 'YY-MM/' }}{{ numregister }}">
+          <td class="col1" colspan="2">Date: {{ today | date: 'dd / MM / yyyy' }}</td>
+          <td class="col3" colspan="2"><h6>N° <span>{{ numregister }}</span></h6>
+              <input type="hidden" name="numero"  ngModel="{{ nexDisbursNumber }}">
           </td>
         </tr>
 
@@ -52,13 +52,12 @@
 
               <select class="form-select" name="for" (change)="onDisplaySelectedBeneficiaryField(disbursForm)"
                       ngModel="" [multiple]="!showSelectedBeneficiary" [hidden]="!showSelectBeneficiary">
-                <option *ngFor="let b of searchResult;" value="{{ b.userId }}" >{{ b.civility + '. ' + b.lastname + ' ' + b.firstname }}</option>
+                <option *ngFor="let b of searchResult;" value="{{ b.userId }}">{{ b.civility + '. ' + b.lastname + ' ' + b.firstname }}</option>
               </select>
 
               <div class="input-group mb-3">
-                <select class="form-select" name="civility" ngModel style="width: 10px;"
-                      ngModel [hidden]="!showInputBeneficiary">
-                  <option value="M">M.</option>
+                <select class="form-select" name="civility" ngModel style="width: 10px;" [hidden]="!showInputBeneficiary">
+                  <option value="M" selected="selected">M.</option>
                   <option value="Mme">Mme.</option>
                   <option value="Mlle">Mlle.</option>
                 </select>
@@ -69,13 +68,7 @@
                 <input type="text" name="mobile"  class="form-control" placeholder="Mobile" autocomplete="off"
                        ngModel [hidden]="!showInputBeneficiary" style="width:100px">
               </div>
-              <!--
-              <optgroup label="US">
-                <option value="">test 1</option>
-                <option value="">test 2</option>
-                <option value="">test 3</option>
-              </optgroup>
-              -->
+
 
             </div>
           </td>
@@ -106,15 +99,26 @@
         <tr>
           <td class="col1">Indice du budget :</td>
           <td colspan="3">
-            <select name="budgetIndex" class="form-select" ngModel required>
-              <option selected></option>
+            <div class="input-group mb-3">
+              <select name="groupbudget" class="form-select" ngModel required (change)="sortIndexByGroupedBudged(disbursForm)">
+                <option value="" disabled>-- Selectionez --</option>
 
-              <option *ngFor="let indexbg of budgetIndex;" value="{{ indexbg.budgindexId }}">
-                  {{ indexbg.budgindexName }}
-              </option>
+                <option *ngFor="let gbudget of groupedBudget;" value="{{ gbudget.groupedbudgetId }}">
+                  {{ gbudget.groupedbudgetName }}
+                </option>
 
-              <option value="">Autre</option>
-            </select>
+                <option value="">-- Autre --</option>
+              </select>
+              <select name="budgetIndex" class="form-select" ngModel required>
+                <option value="" disabled>-- Selectionez --</option>
+
+                <option *ngFor="let indexbg of budgetIndex;" value="{{ indexbg.budgindexId }}">
+                    {{ indexbg.budgindexName }}
+                </option>
+
+                <option value="">-- Autre --</option>
+              </select>
+            </div>
           </td>
         </tr>
 

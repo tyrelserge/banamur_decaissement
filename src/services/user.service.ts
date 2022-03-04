@@ -5,6 +5,7 @@ import {Departement, NotifUser, Office, Profile, User} from "../models/user.mode
 import {NgForm} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
+import {BudgetSecteur} from "../models/budget.model";
 
 @Injectable()
 export class UserService {
@@ -326,7 +327,7 @@ export class UserService {
 
   }
   sendValidationMail(response: any) {
-    
+
   }
 
   addDepartment(userId: number | undefined, form: NgForm, callback: (department: Departement) => void) {
@@ -413,7 +414,6 @@ export class UserService {
       },
       error => console.error('There was an error!', error));
   }
-
   addProviderUser(civility: string, porvider:string, modile:string, callback: (user: User) => void) {
 
     let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/create";
@@ -451,6 +451,19 @@ export class UserService {
       error => console.error('There was an error!', error));
   }
 
+  seeNotifications(userId: number | undefined, callback: () => void) {
+    const url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/notify/seen/" + userId;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback();
+        } else {
+          console.error("Aucune notification trouvé");
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
   lookForuserbyname(username: string, callback: (users: User[]) => void) {
 
     const url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/search/" + username;
@@ -462,6 +475,30 @@ export class UserService {
           callback(data.response);
         } else {
           console.error("Aucun utilisateur trouvé");
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+
+  setPassword(userId: number | undefined, form: NgForm, callback: () => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+ userId +'/setpassword';
+
+    let params = {
+      'pwd': form.value['pwd']
+    }
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json'
+    })
+
+    this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          alert("Votre mot de passe a été changé avec succes")
+          callback();
+        } else {
+          console.error('Verifier que le champ est entré correctement');
         }
       },
       error => console.error('There was an error!', error));

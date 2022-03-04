@@ -1,0 +1,163 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <div class="generale card text-center">
+    <div class="header-title"><h6>Réssources budgetaires</h6></div>
+    <div class="card-header">
+      <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+          <a href="#" class="nav-link" aria-current="true" [ngClass]="{'active':groupbudgetSelected}" (click)="onGroupbudgetSelected($event)">Budget prévisionnel</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link" aria-current="true" [ngClass]="{'active':budgetindexSelected}" (click)="onBudgetindexSelected($event)">Index de budget</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-body">
+
+      <table class="central">
+        <tbody class="groupbudget" [hidden]="!groupbudgetSelected">
+        <tr>
+          <td class="side">
+            <div class="mb-3">
+              <select name="" class="form-select" multiple ngModel required>
+                <option value="1" *ngFor="let groupBudget of groupsBudget"
+                        value="{{ groupBudget.groupedbudgetId }}">{{ groupBudget.groupedbudgetName }} </option>
+              </select>
+            </div>
+          </td>
+          <td class="content">
+            <div class="details">
+
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2"><hr/></td>
+        </tr>
+
+        <tr>
+          <td class="side">
+            <div class="side-left">
+
+              <div class="sector_box">
+                <a href="#"><img src="assets/icon/{{ budgetsector.budgsectorImg }}" alt=""></a>
+                <div class="item-label">
+                  <h4>{{ budgetsector.budgsectorName }}</h4>
+                  <p>{{ budgetsector.budgsectorDescription }}</p>
+                </div>
+              </div>
+
+            </div>
+          </td>
+
+          <td class="content">
+
+            <form (ngSubmit)="onGroupBudgetSubmit(groupbudgetForm)" #groupbudgetForm="ngForm">
+
+              <div class="mb-3">
+                <select name="sector" class="form-select" ngModel required (change)="onBudgetSectorSelected(groupbudgetForm);">
+                  <option *ngFor="let sector of budgetsectors"  value="{{ sector.budgsectorId }}">{{ sector.budgsectorName }}</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <input type="text" name="groupname" class="form-control recipient readonly" ngModel required placeholder="Intitulé du budget" >
+              </div>
+
+              <div class="mb-3">
+                <textarea name="describtion" ngModel class="form-control" rows="2" placeholder="Description" ngModel></textarea>
+              </div>
+
+              <div class="mb-3">
+                <input type="number" [maxLength]="11" name="estimate" class="form-control recipient readonly" ngModel placeholder="Estimation du montant">
+              </div>
+
+              <button type="submit" class="btn btn-primary" [disabled]="groupbudgetForm.invalid">Enregistrer</button>
+
+            </form>
+          </td>
+        </tr>
+        </tbody>
+
+        <tbody class="indexbudget" [hidden]="!budgetindexSelected">
+
+
+        <tr>
+          <td class="side">
+            <div class="mb-3">
+              <select name="" class="form-select" multiple ngModel required>
+                <option value="1" *ngFor="let budgetIndex of budgetsIndex"
+                        value="{{ budgetIndex.budgindexId }}">{{ budgetIndex.budgindexName }}</option>
+              </select>
+            </div>
+          </td>
+          <td class="content">
+            <div class="details">
+
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2"><hr/></td>
+        </tr>
+
+
+        <tr>
+          <td class="side">
+            <div class="side-left" [hidden]="!budgetsector.budgsectorId">
+
+              <div class="sector_box">
+                <a href="#"><img src="assets/icon/{{ budgetsector.budgsectorImg }}" alt=""></a>
+                <div class="item-label">
+                  <h4>{{ budgetsector.budgsectorName }}</h4>
+                  <p>{{ budgetsector.budgsectorDescription }}</p>
+                </div>
+              </div>
+
+            </div>
+          </td>
+
+          <td class="content">
+
+            <form (ngSubmit)="onIndexBudgetSubmit(indexbudgetForm)" #indexbudgetForm="ngForm">
+
+              <div class="mb-3">
+                <select name="groupbudget" class="form-select" ngModel required (change)="onChangeGroupBudgetSelect(indexbudgetForm)">
+                  <option *ngFor="let groupBudget of groupsBudget"
+                          value="{{ groupBudget.groupedbudgetId }}">{{ groupBudget.groupedbudgetName }}</option>
+                </select>
+                <input type="hidden" name="budgsectorid" class="form-control" ngModel="{{ groupBudget.budgsectorId }}" required placeholder="Intitulé de l'index" >
+              </div>
+
+              <div class="mb-3">
+                <input type="text" name="indexname" class="form-control" ngModel required>
+              </div>
+
+              <div class="mb-3">
+                <textarea name="describtion" ngModel class="form-control" rows="2" placeholder="Description" ngModel></textarea>
+              </div>
+
+              <div class="mb-3">
+                <input type="number" [maxLength]="11" name="estimate" class="form-control" ngModel placeholder="Estimation du montant">
+              </div>
+
+              <button type="submit" class="btn btn-primary" [disabled]="indexbudgetForm.invalid">Enregistrer</button>
+
+            </form>
+          </td>
+        </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<app-footer></app-footer>

@@ -4,6 +4,8 @@ import {DisbursService} from "../../../services/disburs.service";
 import {User} from "../../../models/user.model";
 import {AuthService} from "../../../services/auth.service";
 import {BudgetService} from "../../../services/budget.service";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-claimantrequest',
@@ -13,7 +15,12 @@ import {BudgetService} from "../../../services/budget.service";
 export class ClaimantrequestComponent implements OnInit {
 
   user: User = new User();
+
   disbursements: Disbursement[] = new Array<Disbursement>();
+
+  budgetsectors: BudgetSecteur[] = new Array<BudgetSecteur>();
+  groupsBudget: GroupedBudget[] = new Array<GroupedBudget>();
+  budgetsIndex: BudgetIndex[] = new Array<BudgetIndex>();
 
   current: number = 0;
   approved: number = 0;
@@ -33,6 +40,18 @@ export class ClaimantrequestComponent implements OnInit {
       }
       this.countStatus(data);
     });
+
+    this.budgetService.getBudgetSectorList((budgetSectors) => {
+      this.budgetsectors = budgetSectors
+    });
+
+    this.budgetService.getGroupBudgetList(groupsBudget => {
+      this.groupsBudget = groupsBudget;
+    });
+
+    this.budgetService.getBugdetIndexList((budgetsIndex)=> {
+      this.budgetsIndex = budgetsIndex;
+    });
   }
 
   countStatus(disbursements: Disbursement[]) {
@@ -43,9 +62,10 @@ export class ClaimantrequestComponent implements OnInit {
     }
   }
 
-  getItemBugdetIndex(budgindexId: number | undefined) {
-    this.budgetService.getBugdetIndex(budgindexId, (data) => {
-      return data.budgindexName;
-    });
+  formatIdentifier(createdOn: string | undefined, budgsectorId:number | undefined, identifier:string | undefined ) {
+    if (createdOn!=undefined && budgsectorId!=undefined)
+      return 'DECAISS' + formatDate(new Date(createdOn), 'yyMM', 'en_US') +
+        '/' + this.disbursService.sectorIndexAlphab(budgsectorId.toString()) + identifier;
+    return null;
   }
 }

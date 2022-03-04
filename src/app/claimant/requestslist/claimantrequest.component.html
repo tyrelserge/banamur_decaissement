@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="container">
   <h5 class="page-title">Mes décaissements </h5>
-  <div class="requests-access"><a href="/decaissement">Table de décaissement</a></div>
+  <div class="requests-access"><a href="#" routerLink="/decaissement">Table de décaissement</a></div>
 
   <div class="request-list">
 
@@ -23,11 +23,34 @@
 
       <tbody *ngFor="let disb of disbursements; let i = index">
         <tr *ngIf="disb.status=='submitted';">
-          <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
-          <td>{{ disb.identifier }}</td>
+          <td>{{ disb.createdOn | date: 'dd/MM/yyyy à HH:mm' }}</td>
+
+          <td>
+            <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
+                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                 </span>
+               </span></span></span>
+          </td>
+
           <td style="text-align: left">{{ disb.reason }}</td>
-          <td>SECTEUR</td>
-          <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+
+          <td>
+            <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">{{ sector.budgsectorName }}</span>
+               </span></span></span>
+          </td>
+
+          <td>
+            <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="bindex.budgindexId==disb.budgindexId">{{ bindex.budgindexName }}</span>
+            </span>
+          </td>
+
           <td style="text-align: right;">{{ disb.amountRequested }}</td>
           <td><span style="color: #8b2b17;">En attente</span></td>
           <td><a href="#"  routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>
@@ -53,11 +76,34 @@
 
       <tbody *ngFor="let disb of disbursements;">
       <tr *ngIf="disb.status=='approved'">
-        <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
-        <td>{{ disb.identifier }}</td>
+        <td>{{ disb.createdOn | date: 'dd/MM/yyyy à HH:mm' }}</td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
+                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                 </span>
+               </span></span></span>
+        </td>
+
         <td style="text-align: left">{{ disb.reason }}</td>
-        <td>SECTEUR</td>
-        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">{{ sector.budgsectorName }}</span>
+               </span></span></span>
+        </td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+            <span *ngIf="bindex.budgindexId==disb.budgindexId">{{ bindex.budgindexName }}</span>
+          </span>
+        </td>
+
         <td style="text-align: right;">{{ disb.amountRequested }}</td>
         <td><span>{{ disb.amountApproved==null ? '-' : disb.amountApproved }}</span></td>
         <td><a href="#" routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>
@@ -83,11 +129,31 @@
 
       <tbody *ngFor="let disb of disbursements;">
       <tr *ngIf="disb.status=='rejected'">
-        <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
-        <td>{{ disb.identifier }}</td>
+        <td>{{ disb.createdOn | date: 'dd/MM/yyyy à HH:mm' }}</td>
+
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
+                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                 </span>
+               </span></span></span>
+        </td>
+
         <td style="text-align: left">{{ disb.reason }}</td>
-        <td>SECTEUR</td>
-        <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">{{ sector.budgsectorName }}</span>
+               </span></span></span>
+        </td>
+        <td>
+          <span *ngFor="let bindex of budgetsIndex">
+            <span *ngIf="bindex.budgindexId==disb.budgindexId">{{ bindex.budgindexName }}</span>
+          </span>
+        </td>
         <td style="text-align: right;">{{ disb.amountRequested }}</td>
         <td><span>{{ disb.amountApproved==null ? '-' : disb.amountApproved }}</span></td>
         <td><a href="#"  routerLink="requete/{{ disb.debursementId }}">Consulter</a></td>

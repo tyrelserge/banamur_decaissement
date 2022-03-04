@@ -5,7 +5,7 @@ import {ResponseInterface} from "../models/response.interface";
 import {UserService} from "./user.service";
 import {Disbursement, ReasonItems, ValidationAction} from "../models/disburs.model";
 import {Router} from "@angular/router";
-import {User} from "../models/user.model";
+import {formatDate} from "@angular/common";
 
 @Injectable()
 export class DisbursService {
@@ -14,19 +14,64 @@ export class DisbursService {
               private userService: UserService,
               private router: Router) {}
 
+
+  getDisbursementNextNumbering(callback: (num:string) => void) {
+
+    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/registration/nextnumber";
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.error("Ce probleme de recupération de données");
+        }
+      },
+      error => {
+        console.error('There was an error!', error)
+      });
+  }
+
+  formatRegisterNumberingFormat(num: string | undefined, sectorId: string | undefined, date: Date) {
+    return 'DECAISS' + formatDate(date, 'yyMM', 'en_US') + '/' + this.sectorIndexAlphab(sectorId) + num;
+  }
+  sectorIndexAlphab(id: string | undefined) {
+    switch (id) {
+      case '1': return 'A';
+        break;
+      case '2': return 'B';
+        break;
+      case '3': return 'C';
+        break;
+      default: return '';
+        break;
+    }
+  }
+
   addDisbursmentRequest(userId:number | undefined, form: NgForm, reasonIds:number[], callback: (response: Disbursement) => void) {
 
     let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/disbusement/request';
 
-    let recipient = form.value['for'][0]!=null && form.value['for'][0]!='' ? form.value['for'][0] : form.value['for'];
+    let recipient = userId;
+
+    if (form.value['for']!=null && form.value['for']!="") {
+
+      if (form.value['for'][0]!=null && form.value['for'][0]!="") {
+        recipient = form.value['for'][0];
+      } else {
+        recipient = form.value['for'];
+      }
+    } else {
+      recipient = userId;
+    }
 
     let params = {
       'budgindexId': form.value['budgetIndex'],
       'userId': userId,
+      'recipientId': recipient,
       'identifier': form.value['numero'],
       'reason': form.value['reason'],
       'amountRequested': form.value['totalamount'],
-      'recipientId': recipient!=null ? recipient : userId,
       'status': 'submitted',
       'reasonItemsIds': reasonIds
     };
@@ -34,8 +79,6 @@ export class DisbursService {
     let headers = new HttpHeaders({
       'Content-type': 'application/json'
     });
-
-
 
     this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
       data => {
@@ -201,16 +244,16 @@ export class DisbursService {
       },
       error => console.error('There was an error!', error));
   }
-  treatedValidation(userId: number | undefined, disbursements: Disbursement[], callback: (data: any) => void) {
+  treatedValidation(userId: number | undefined, disbursement: Disbursement, callback: (treated: boolean) => void) {
     let treated = false;
-    for (let disburs of disbursements) {
-      for (let val of disburs.validations) {
+    //for (let disburs of disbursements) {
+      for (let val of disbursement.validations) {
         if (val.userId == userId) {
           treated = true;
+          callback(treated);
         }
       }
-    }
-    callback(treated);
+    //}
   }
   loadValidationChain(validations: ValidationAction[], callback: (validationChain: any[]) => void) {
 

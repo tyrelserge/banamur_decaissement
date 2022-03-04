@@ -38,13 +38,13 @@ export class ProcessrequestComponent implements OnInit {
     const id = this.activeRoute.snapshot.params['disbursid'];
     this.disbursService.getDisbursementRequest(id, (disburs) => {
       this.disbursement = disburs;
-      this.disbursService.treatedValidation(this.user.userId, [disburs], (treated) => {
-        if ((disburs.status=='treated' || disburs.status=='rejected') || treated)
-          this.router.navigate(['moderateur/requete/'+this.disbursement.debursementId])
-      });
+      //this.disbursService.treatedValidation(this.user.userId, [disburs], (treated) => {
+        //if ((disburs.status=='treated' || disburs.status=='rejected') || treated)
+        //  this.router.navigate(['moderateur/requete/'+this.disbursement.debursementId])
+      //});
       this.budgetService.getBugdetIndex(disburs.budgindexId, (index) =>{
         this.budgetIndex = index;
-        this.budgetService.getSelectedSector(index.budgsectorId, (sector) => {
+        this.budgetService.getBudgetSector(index.budgsectorId, (sector) => {
           this.budgetSector = sector;
         });
       })

@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="container">
   <h5 class="page-title">Demandes en attentes</h5>
-  <div class="requests-access"><a href="/moderateur">Tableau de bord</a></div>
+  <div class="requests-access"><a href="#" routerLink="/moderateur">Tableau de bord</a></div>
 
   <div class="request-list">
 
@@ -21,14 +21,44 @@
       </thead>
 
       <tbody >
-        <tr *ngFor="let disb of pendingDisburs; let i = index" [ngClass]="{'untreated': !treated }"
+        <tr *ngFor="let disb of pendingDisburs;" [ngClass]="{'untreated': checktreatedValidation(disb) }"
             routerLink="./requete/{{ disb.debursementId }}/processing">
-          <td>{{ disb.createdOn | date: 'd/MM/yyyy à HH:mm' }}</td>
-          <td>{{ disb.identifier }}</td>
-          <td>{{ disb.recipientId }}</td>
+          <td>{{ disb.createdOn | date: 'dd/MM/yyyy à HH:mm' }}</td>
+
+          <td>
+             <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
+                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                 </span>
+               </span></span></span>
+          </td>
+
+          <td>
+            <span *ngFor="let recip of users">
+              <span *ngIf="recip.userId==disb.recipientId">
+                {{ recip.civility + '. ' + recip.lastname + ' ' + recip.firstname }}
+              </span>
+            </span>
+          </td>
+
           <td style="text-align: left">{{ disb.reason }}</td>
-          <td>SECTEUR</td>
-          <td><!--getItemBugdetIndex(disb.budgindexId)--> {{ disb.budgindexId }}</td>
+
+          <td>
+            <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="disb.budgindexId==bindex.budgindexId">
+               <span *ngFor="let sector of budgetsectors">
+                 <span *ngIf="bindex.budgsectorId==sector.budgsectorId">{{ sector.budgsectorName }}</span>
+               </span></span></span>
+          </td>
+
+          <td>
+            <span *ngFor="let bindex of budgetsIndex">
+              <span *ngIf="bindex.budgindexId==disb.budgindexId">{{ bindex.budgindexName }}</span>
+            </span>
+          </td>
+
           <td style="text-align: right;">{{ disb.amountRequested }}</td>
         </tr>
       </tbody>

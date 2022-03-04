@@ -63,6 +63,7 @@ export class NotifUser {
   userId: number | undefined;
   notification: Notification = new Notification();
   notificationDate: string | undefined;
+  notificationSeen:string | undefined;
   notificationOpened: string | undefined;
   notificationLink: string | undefined
 }

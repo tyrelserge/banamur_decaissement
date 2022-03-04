@@ -12,10 +12,10 @@
             Paramètre
           </div> -->
           <ul class="list-group list-group-flush">
-            <li class="list-group-item current" style=""> <a href="" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
-            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
-            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
-            <li class="list-group-item" style=""> <a href="" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
+            <li class="list-group-item current" style=""> <a href="#" routerLink="/moderateur/reglage/comptes" class="setting-item">Reglage des comptes</a></li>
+            <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage/ressources" class="setting-item">Paramètre des ressources</a></li>
+            <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage/roles" class="setting-item">Reglage des roles & services</a></li>
+            <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/reglage" class="setting-item">Reglage général</a></li>
           </ul>
           <!--<div class="card-footer"></div>-->
         </div>
@@ -48,8 +48,8 @@
                   </p>
                 </td>
                 <td class="col2">
-                  <p><a href="" routerLink="./">Modifier mes informations personnelles</a><br/>
-                  <a href="" style="color: gray;"routerLink="./" >Supprimer mon compte</a></p>
+                  <p><a href="#" routerLink="./">Modifier mes informations personnelles</a><br/>
+                  <a href="#" style="color: gray;"routerLink="./" >Supprimer mon compte</a></p>
                 </td>
               </tr>
 
@@ -60,8 +60,8 @@
                     <span>{{ self.mobile }}</span>
                   </p>
                 </td>
-                <td class="col2" colspan="2"><a href="">Modifier l'adresse e-mail</a> <br/>
-                  <a href="" routerLink="./">Changer mon numéro de téléphone</a></td>
+                <td class="col2" colspan="2"><a href="#">Modifier l'adresse e-mail</a> <br/>
+                  <a href="#" routerLink="./">Changer mon numéro de téléphone</a></td>
               </tr>
 
               <tr>
@@ -70,12 +70,25 @@
                     <span>{{ office.profile ? office.profile.profileName : '' }}</span>
                   </p>
                 </td>
-                <td class="col2"><a href="" routerLink="./">Changer mon profil</a></td>
+                <td class="col2"><a href="#" routerLink="./">Changer mon profil</a></td>
               </tr>
 
               <tr>
-                <td class="col1"><p>************</p></td>
-                <td class="col2"><a href="" routerLink="./">Modifier mon mot de passe</a></td>
+                <td class="col1">
+                  <p>************</p>
+                </td>
+                <td class="col2">
+                  <div [hidden]="!displaysetpwd">
+                    <form (ngSubmit)="onSubmitSetpwd(setpwdForm)" #setpwdForm="ngForm">
+                      <div class="input-group">
+                          <input type="password" name="pwd" ngModel class="form-control" placeholder="************" required>
+                          <button class="btn btn-outline-primary" type="submit" [disabled]="setpwdForm.invalid" >Modifier</button>
+                        </div>
+                    </form>
+                  </div>
+                  <a href="#" routerLink="./" (click)="onDisplaySetPwd()" [hidden]="displaysetpwd">Modifier mon mot de passe</a>
+                  <a href="#" routerLink="./" (click)="onDisplaySetPwd()" [hidden]="!displaysetpwd">Annuler</a>
+                </td>
               </tr>
 
             </tbody>
@@ -112,8 +125,8 @@
               </td>
               <td class="col2">
                 <p>
-                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
-                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);" >Supprimer ce compte</a>
+                  <a href="#" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
+                  <a href="#" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);" >Supprimer ce compte</a>
                 </p>
               </td>
             </tr>
@@ -125,7 +138,7 @@
                   <span>{{ user.mobile }}</span>
                 </p>
               </td>
-              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+              <td class="col2" colspan="2"><p><a href="#" routerLink="./">Reinitialiser le mot de passe</a></p></td>
             </tr>
 
             <tr>
@@ -170,8 +183,8 @@
               </td>
               <td class="col2">
                 <p>
-                  <a href="" style="color: gray;" (click)="$event.preventDefault(); deactivateAccount(user.userId);">Désactiver ce compte</a> |
-                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
+                  <a href="#" style="color: gray;" (click)="$event.preventDefault(); deactivateAccount(user.userId);">Désactiver ce compte</a> |
+                  <a href="#" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
                 </p>
               </td>
             </tr>
@@ -183,7 +196,7 @@
                   <span>{{ user.mobile }}</span>
                 </p>
               </td>
-              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+              <td class="col2" colspan="2"><p><a href="#" routerLink="./">Reinitialiser le mot de passe</a></p></td>
             </tr>
 
             <tr>
@@ -229,8 +242,8 @@
               </td>
               <td class="col2">
                 <p>
-                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
-                  <a href="" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
+                  <a href="#" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a> |
+                  <a href="#" style="color: red;" (click)="$event.preventDefault(); deleteAccount(user.userId);">Supprimer ce compte</a>
                 </p>
               </td>
             </tr>
@@ -242,7 +255,7 @@
                   <span>{{ user.mobile }}</span>
                 </p>
               </td>
-              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+              <td class="col2" colspan="2"><p><a href="#" routerLink="./">Reinitialiser le mot de passe</a></p></td>
             </tr>
 
             <tr>
@@ -288,7 +301,7 @@
               </td>
               <td class="col2">
                 <p>
-                  <a href="" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a>
+                  <a href="#" style="color: green;" (click)="$event.preventDefault(); activateAccount(user.userId);">Activer ce compte</a>
                 </p>
               </td>
             </tr>
@@ -300,7 +313,7 @@
                   <span>{{ user.mobile }}</span>
                 </p>
               </td>
-              <td class="col2" colspan="2"><p><a href="" routerLink="./">Reinitialiser le mot de passe</a></p></td>
+              <td class="col2" colspan="2"><p><a href="#" routerLink="./">Reinitialiser le mot de passe</a></p></td>
             </tr>
 
             <tr>

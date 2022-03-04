@@ -1,49 +1,44 @@
-import {BudgetIndex, BudgetSecteur} from "../models/budget.model";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../models/budget.model";
 import {ResponseInterface} from "../models/response.interface";
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {NgForm} from "@angular/forms";
 
 @Injectable()
 export class BudgetService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getSelectedSector(id: number | undefined, callback: (budgsector: BudgetSecteur) => void) {
+  getBudgetSector(budgetSectorId: number | undefined, callback: (budgetSector: BudgetSecteur) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sector";
-    let budgetSector:any = new BudgetSecteur();
-
-    this.httpClient.get<ResponseInterface>(url + '/' + id).subscribe(
-      data => {
-        if (data.statusCode == "SUCCESS") {
-          budgetSector = data.response
-        } else {
-          console.error("Ce secteur samble ne pas exister !");
-        }
-        callback(budgetSector);
-      },
-      error => {
-        console.error('There was an error!', error)
-      });
-  }
-
-  getBugdetIndexList(callback:(budgetIndex: BudgetIndex) => void) {
-
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindexs";
+    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sector/'+budgetSectorId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
           callback(data.response);
         } else {
-          console.error("Une erreur s'est produite !");
+          console.error("Aucun profil trouvé");
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  getGroupBugdet(groupBudgetId: number | undefined, callback:(groupBudget: GroupedBudget) => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudget/' + groupBudgetId;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          alert("Ce Budget samble ne pas exister !");
         }
       },
       error => {
         console.error('There was an error!', error)
       });
   }
-
   getBugdetIndex(budgindexId: number | undefined, callback:(budgetIndex: BudgetIndex) => void) {
 
     let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindex/' + budgindexId;
@@ -60,4 +55,111 @@ export class BudgetService {
         console.error('There was an error!', error)
       });
   }
+
+  addGroupBudget(userId: number | undefined, form: NgForm, callback: (groupBudget: GroupedBudget) => void) {
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudget';
+
+    let params = {
+      'userId': userId,
+      'budgsectorId': form.value['sector'],
+      'groupedbudgetName': form.value['groupname'],
+      'groupedbudgetDescription': form.value['describtion'],
+      'groupedbudgetValue': form.value['estimate'],
+      'status': 'active',
+      'renewal': null
+    }
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json'
+    })
+
+    this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          callback(data.response);
+        } else {
+          console.error('Verifiez que tous les champs son entré correctement');
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  addBudgetIndex(userId: number | undefined, form: NgForm, callback: (budgetIndex: BudgetIndex) => void) {
+
+
+    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindex';
+
+    let params = {
+      'userId': userId,
+      'budgsectorId': form.value['budgsectorid'],
+      'groupedbudgetId': form.value['groupbudget'],
+      'budgindexName': form.value['indexname'],
+      'budgetindexDescription': form.value['describtion'],
+      'budgetindexValue': form.value['estimate'],
+      'status': 'active',
+      'renewal': null
+    }
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json'
+    })
+
+    this.httpClient.post<ResponseInterface>(url, params, {headers}).subscribe(
+      data => {
+        if (data.statusCode=='SUCCESS') {
+          callback(data.response);
+        } else {
+          console.error('Verifiez que tous les champs son entré correctement');
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+
+  getBudgetSectorList(callback: (budgetSector: BudgetSecteur[]) => void) {
+
+    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sectors';
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.error("Aucun profil trouvé");
+        }
+      },
+      error => console.error('There was an error!', error));
+  }
+  getGroupBudgetList(callback:(groupsBudget: GroupedBudget[]) => void) {
+
+    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudgets";
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.error("Une erreur s'est produite !");
+        }
+      },
+      error => {
+        console.error('There was an error!', error)
+      });
+  }
+  getBugdetIndexList(callback:(budgetsIndex: BudgetIndex[]) => void) {
+
+    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindexs";
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.error("Une erreur s'est produite !");
+        }
+      },
+      error => {
+        console.error('There was an error!', error)
+      });
+  }
+
 }

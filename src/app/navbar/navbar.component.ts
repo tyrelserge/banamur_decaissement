@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
       return count;
 
     while(i <= userNotfs.length) {
-      if(userNotfs[i] && userNotfs[i].notificationOpened==null) count += 1;
+      if(userNotfs[i] && userNotfs[i].notificationOpened==null && userNotfs[i].notificationSeen==null) count += 1;
       i++;
     }
 
@@ -60,16 +60,18 @@ export class NavbarComponent implements OnInit {
   }
   onOpenNotification(notificationId: number | undefined, redirectTo:string | undefined) {
     this.userService.goToNotificationLink(notificationId, (userId) => {
-      this.onDisplayNotice();
       this.loadUserNotification(userId);
       if (redirectTo!=undefined) this.router.navigate([redirectTo]);
     });
   }
 
   onDisplayNotice() {
+
     this.showNotice = !this.showNotice;
     if (this.showSettings==true) this.showSettings = !this.showSettings;
     if(this.switchMode==true) this.switchMode = !this.switchMode;
+
+    this.userService.seeNotifications(this.user.userId, () => {})
   }
   onDisplaySettings() {
     this.showSettings = !this.showSettings;

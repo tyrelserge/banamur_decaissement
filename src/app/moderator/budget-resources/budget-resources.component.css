@@ -1,0 +1,40 @@
+.container {min-height: 460px}
+
+
+.generale.card { margin-top: 0px; min-height: 400px; }
+.generale.card .header-title {text-align: right; position: absolute; right: 20px; top: 15px}
+
+.card-body .central .side {width: 40%}
+.card-body .central .content {width: 50%}
+
+.generale.card .side-left {}
+
+.generale.card .sector_box {
+  width: 146px; margin-top:0px; display: inline-block;
+}
+
+.generale.card .sector_box .item-label {
+  color: gray; margin-left: 0px; margin-top:10px
+}
+
+.generale.card .sector_box .item-label h4{
+  font-weight: bold; color:#4F6064;
+}
+
+.generale.card .sector_box a {
+  width: 146px; height: 106px; border-radius: 20px; border: 1px solid lightgray;
+  display: flex; align-content: center; justify-content: center;
+}
+
+.generale.card .sector_box a img{
+  width:60px; position: relative; top: -3px
+}
+
+.generale.card table {width: 100%;}
+.generale.card table .content{text-align: right}
+.generale.card table .content .form-check-label{text-align: left}
+
+.generale.card table .content .details { text-align: left; padding-left: 20px}
+
+a, a:visited, a:hover { text-decoration: none; }
+a:hover {}

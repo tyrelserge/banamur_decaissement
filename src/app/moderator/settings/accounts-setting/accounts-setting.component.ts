@@ -3,6 +3,7 @@ import {AuthService} from "../../../../services/auth.service";
 import {UserService} from "../../../../services/user.service";
 import {Router} from "@angular/router";
 import {Office, User} from "../../../../models/user.model";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-accounts-setting',
@@ -20,6 +21,7 @@ export class AccountsSettingComponent implements OnInit {
   activeAccount: User[] = new Array<User>();
   disabledAccount: User[] = new Array<User>();
   deletedAccount: User[] = new Array<User>();
+  displaysetpwd: boolean = false;
 
 
   constructor(private authService: AuthService,
@@ -90,6 +92,17 @@ export class AccountsSettingComponent implements OnInit {
           this.deletedAccount.push(user);
       }
 
+    });
+  }
+
+  onDisplaySetPwd() {
+    this.displaysetpwd = !this.displaysetpwd;
+  }
+
+  onSubmitSetpwd(setpwdForm:NgForm) {
+    this.userService.setPassword(this.self.userId, setpwdForm, ()=>{
+      this.authService.signOut();
+      this.router.navigate(['/']);
     });
   }
 }
