@@ -65,10 +65,7 @@ export class DisbursementComponent implements OnInit {
     this.disbursService.getDisbursementNextNumbering((LastNum)=>{
       this.nexDisbursNumber = LastNum;
       this.numregister = this.disbursService.formatRegisterNumberingFormat(LastNum, sectorId, new Date());
-      this.numregister = this.disbursService.formatRegisterNumberingFormat(LastNum, sectorId, new Date());
-      this.numregister = this.disbursService.formatRegisterNumberingFormat(LastNum, sectorId, new Date());
     });
-
 
     this.budgetService.getBudgetSector(sectorId, (budgetSector) => {
       this.budgsector = budgetSector
@@ -128,10 +125,6 @@ export class DisbursementComponent implements OnInit {
     disbursForm.controls['provider'].reset();
   }
 
-  cumulativeAmount() {
-
-  }
-
   onReasonSubmit(reasonForm: NgForm) {
     this.disbursService.addDisbursementReason(reasonForm, (reason: ReasonItems)=>{
       this.reasons.push(reason);
@@ -143,18 +136,21 @@ export class DisbursementComponent implements OnInit {
     });
   }
   onSubmitDisbursment(disbursForm: NgForm) {
-    if (disbursForm.value['provider']!=null && disbursForm.value['provider']!='') {
-      this.userService.addProviderUser(disbursForm.value['civility'], disbursForm.value['provider'], disbursForm.value['mobile'], (p:User)=>{
-        disbursForm.controls['for'].setValue(p.userId);
+    this.disbursService.getDisbursementNextNumbering((num)=>{
+      disbursForm.controls['identifier'].setValue(num);
+      if (disbursForm.value['provider']!=null && disbursForm.value['provider']!='') {
+        this.userService.addProviderUser(disbursForm.value['civility'], disbursForm.value['provider'], disbursForm.value['mobile'], (p:User)=>{
+          disbursForm.controls['for'].setValue(p.userId);
+          this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
+            this.router.navigate(['/decaissement/historique']);
+          });
+        });
+      } else {
         this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
           this.router.navigate(['/decaissement/historique']);
         });
-      });
-    } else {
-      this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
-        this.router.navigate(['/decaissement/historique']);
-      });
-    }
+      }
+    });
   }
 
   displayDetailsFields(disbursForm:NgForm, reasonForm:NgForm) {

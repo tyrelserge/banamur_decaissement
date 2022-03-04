@@ -38,7 +38,7 @@
                      *ngIf="(disbursement.userId == disbursement.recipientId)"
                      placeholder = "{{ claimant.civility + '. ' + claimant.lastname + ' ' + claimant.firstname }}">
               <div *ngIf="(disbursement.userId != disbursement.recipientId)">
-                <p>Demandeur : <span style="font-weight: bold">
+                <p>Emetteur : <span style="font-weight: bold">
                 {{ claimant.civility + '. ' + claimant.lastname + ' ' + claimant.firstname }}
                 </span></p>
               <input type="text" name="for" class="form-control recipient readonly" readonly
