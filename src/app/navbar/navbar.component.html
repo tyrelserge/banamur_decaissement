@@ -36,13 +36,15 @@
                     [ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
                     (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
           <h6>{{ notif.notification!=null ? notif.notification.notificationSubject : null }}</h6>
-          <p><a href="#" class="accent"[ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
+          <p>
+            <a href="#" class="accent"[ngClass]="!(notif.notificationOpened===null) ? 'opened' : ''"
                 (click)="$event.preventDefault(); onOpenNotification(notif.notifuserId, notif.notificationLink);">
             {{ notif.notification!=null && notif.notification.notificationDetails!=undefined ?
-            notif.notification.notificationDetails.slice(0,48) + (notif.notification.notificationDetails.length-1 > 50 ?
+            notif.notification.notificationDetails.slice(0,120) + (notif.notification.notificationDetails.length-1 > 120 ?
             '...' : '') :null }}
-          </a></p>
-          <span>Date: {{ notif.notificationDate | date: 'd / MM / yyyy à HH:mm' }} </span>
+            </a>
+          </p>
+          <p>Date: {{ notif.notificationDate | date: 'd / MM / yyyy à HH:mm' }} </p>
         </a>
       </li>
       <li class="list-group-item" style="color: lightgray" [hidden]="userNotfs!=null">Aucune notification</li>
@@ -66,7 +68,8 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item" style=""> <a href="#" routerLink="/decaissement" class="switch-item">Décaissement</a></li>
       <li class="list-group-item" style=""> <a href="#" routerLink="/moderateur/budget/ressources" class="switch-item">Ressources budgétaires</a></li>
-      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="#" routerLink="/moderateur" class="switch-item">Gestion des requêtes</a></li>
+      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="#" routerLink="/moderateur/requetes" class="switch-item">Gestion des requêtes</a></li>
+      <li class="list-group-item" style="" [hidden]="!isModerator"> <a href="#" routerLink="/moderateur/rapports" class="switch-item">Rapport de caisse</a></li>
       <li class="list-group-item" style=" text-align: center">
         <button class="btn btn-danger" type="button" (click)="onSignOut()" >Déconnexion</button>
       </li>

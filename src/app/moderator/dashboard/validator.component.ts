@@ -36,15 +36,17 @@ export class ValidatorComponent implements OnInit {
         }
       });
     } else {
-      this.router.navigate(['/moderateur/pending-requetes']);          // A supprimer quand le dashbord sera prête
+      this.router.navigate(['/moderateur/requetes']);          // A supprimer quand le dashbord sera prête
     }
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
-    this.disbursService.getPendingDisbursements((data) => {
-      for(let i of data) {
+
+    this.disbursService.getPendingDisbursements((disbursements:Disbursement[]) => {
+      this.disbursements = disbursements;
+      /* for(let i of data) {
         this.disbursements.push(i)
         this.countPending += 1;
-      }
+      } */
     })
   }
 

@@ -39,3 +39,20 @@ export class Disbursement {
   reasonItems:  ReasonItems[] = new Array<ReasonItems>();
   validations: ValidationAction[] = new Array<ValidationAction>()
 }
+
+export class DisbursRapport {
+  debursementId: number | undefined
+  reason: string | undefined;
+  budgsectorId: string | undefined;
+  budgsectorName: string | undefined;
+  groupedbudgetName: string | undefined;
+  civility: string | undefined;
+  firstname: string | undefined;
+  lastname: string | undefined;
+  identifier: string | undefined;
+  createdOn: string | undefined;
+  activateDebursement: string | undefined;
+  amountRequested: string | undefined;
+  amountApproved: string | undefined;
+  status: string | undefined;
+}

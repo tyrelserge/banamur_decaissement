@@ -51,19 +51,28 @@ export class AccountsSettingComponent implements OnInit {
 
   activateAccount(userId: number | undefined) {
     this.userService.setUserStatus(userId, 'active', ()=>{
-      this.userService.sendNotification(userId,3,0, '/');
+      this.userService.sendLocalNotification(userId,3,'/');
+      this.userService.getUserFcmToken(userId, token => {
+        this.userService.sendAndroidNotification(3, false, token, '/');
+      });   // Send recipient notification
       this.refreshAcountesStatus();
     });
   }
 
   deactivateAccount(userId: number | undefined) {
     this.userService.setUserStatus(userId, 'disabled', ()=>{
+      this.userService.getUserFcmToken(userId, token => {
+        this.userService.sendAndroidNotification(16, false, token, '/');
+      });   // Send recipient notification
       this.refreshAcountesStatus();
     });
   }
 
   deleteAccount(userId: number | undefined) {
     this.userService.setUserStatus(userId, 'deleted', ()=>{
+      this.userService.getUserFcmToken(userId, token => {
+        this.userService.sendAndroidNotification(17, false, token, '/');
+      });   // Send recipient notification
       this.refreshAcountesStatus();
     });
   }

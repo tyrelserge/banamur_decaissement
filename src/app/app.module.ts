@@ -33,6 +33,8 @@ import { AccountsSettingComponent } from './moderator/settings/accounts-setting/
 import { GeneralSettingComponent } from './moderator/settings/general-setting/general-setting.component';
 import { DepartmentSettingComponent } from './moderator/settings/department-setting/department-setting.component';
 import { BudgetResourcesComponent } from './moderator/budget-resources/budget-resources.component';
+import { DisbursementReportComponent } from './moderator/disbursement-report/disbursement-report.component';
+import {DatePipe} from "@angular/common";
 
 const appRoutes: Routes = [
 
@@ -49,13 +51,15 @@ const appRoutes: Routes = [
   { path: 'decaissement/historique/requete/:disbursid', canActivate:[GuardService], component: BrowserequestComponent },
 
   { path: '', canActivate:[GuardService], component: ClaimantComponent },
+
   { path: 'moderateur', redirectTo: 'moderateur/dashbord'},
   { path: 'moderateur/dashbord', canActivate:[GuardService], component: ValidatorComponent },
-  { path: 'moderateur/pending-requetes', canActivate:[GuardService], component: RequestpendingComponent },
-  { path: 'moderateur/pending-requetes/requete/:disbursid/processing', canActivate:[GuardService], component: ProcessrequestComponent },
-  { path: 'moderateur/requete/:disbursid', canActivate:[GuardService], component: RequestoverviewComponent },
 
+  { path: 'moderateur/requetes', canActivate:[GuardService], component: RequestpendingComponent },
+  { path: 'moderateur/requetes/requete/:disbursid/processing', canActivate:[GuardService], component: ProcessrequestComponent },
+  { path: 'moderateur/requete/:disbursid', canActivate:[GuardService], component: RequestoverviewComponent },
   { path: 'moderateur/budget/ressources', canActivate:[GuardService], component: BudgetResourcesComponent },
+  { path: 'moderateur/rapports', canActivate:[GuardService], component: DisbursementReportComponent },
 
   { path: 'moderateur/reglage', redirectTo: 'moderateur/reglage/general'},
   { path: 'moderateur/reglage/general', canActivate:[GuardService], component: GeneralSettingComponent },
@@ -93,10 +97,11 @@ const appRoutes: Routes = [
     GeneralSettingComponent,
     DepartmentSettingComponent,
     BudgetResourcesComponent,
+    DisbursementReportComponent,
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     FormsModule,
     HttpClientModule
   ],
@@ -106,7 +111,8 @@ const appRoutes: Routes = [
     UserService,
     BudgetService,
     DisbursService,
-    SettingService
+    SettingService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

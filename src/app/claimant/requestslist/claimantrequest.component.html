@@ -30,7 +30,7 @@
               <span *ngIf="disb.budgindexId==bindex.budgindexId">
                <span *ngFor="let sector of budgetsectors">
                  <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                   {{  disb.identifier }}
                  </span>
                </span></span></span>
           </td>
@@ -83,7 +83,7 @@
               <span *ngIf="disb.budgindexId==bindex.budgindexId">
                <span *ngFor="let sector of budgetsectors">
                  <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                   {{ disb.identifier }}
                  </span>
                </span></span></span>
         </td>
@@ -136,7 +136,7 @@
               <span *ngIf="disb.budgindexId==bindex.budgindexId">
                <span *ngFor="let sector of budgetsectors">
                  <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                   {{ disb.identifier }}
                  </span>
                </span></span></span>
         </td>

@@ -62,13 +62,12 @@ export class DisbursementComponent implements OnInit {
 
     const sectorId = this.activeRoute.snapshot.params['budgsectorid'];
 
-    this.disbursService.getDisbursementNextNumbering((LastNum)=>{
-      this.nexDisbursNumber = LastNum;
-      this.numregister = this.disbursService.formatRegisterNumberingFormat(LastNum, sectorId, new Date());
-    });
-
     this.budgetService.getBudgetSector(sectorId, (budgetSector) => {
       this.budgsector = budgetSector
+      this.disbursService.getDisbursementNextNumbering((LastNum)=>{
+        this.nexDisbursNumber = LastNum;
+        this.numregister = this.disbursService.formatRegisterNumberingFormat(LastNum, budgetSector, new Date());
+      });
     });
 
     this.budgetService.getGroupBudgetList((groupedBudget) => {
@@ -87,7 +86,8 @@ export class DisbursementComponent implements OnInit {
     }
   }
   sortIndexByGroupedBudged(form: NgForm) {
-    form.controls['budgetIndex'].reset();
+    this.budgetIndex =new Array<BudgetIndex>();
+    //form.controls['budgetIndex'].reset();
     let groupedBudgetId:any = form.controls['groupbudget'].value
     this.budgetService.getBugdetIndexList((budgetsIndex => {
       for(let i of budgetsIndex) {
@@ -107,16 +107,21 @@ export class DisbursementComponent implements OnInit {
     disbursForm.controls['for'].reset();
   }
   onDisplaySelectBeneficiary(disbursForm:NgForm) {
-    this.showSelectBeneficiary = true;
+    //this.showSelectBeneficiary = true;
     this.showSelectedBeneficiary = false;
     disbursForm.controls['for'].reset();
 
     if (disbursForm.controls['provider'].value!='' && disbursForm.controls['provider'].value!=null ) {
       this.userService.lookForuserbyname(disbursForm.controls['provider'].value, (users:User[])=> {
-      this.searchResult = users;
-    });
+        this.searchResult = users;
+        if (users.length!=0) { this.showSelectBeneficiary = true;
+        } else {
+          this.showSelectBeneficiary = false;
+        }
+      });
     } else {
       this.searchResult = this.users;
+      this.showSelectBeneficiary = false;
     }
   }
   onDisplaySelectedBeneficiaryField(disbursForm: NgForm) {
@@ -136,11 +141,12 @@ export class DisbursementComponent implements OnInit {
     });
   }
   onSubmitDisbursment(disbursForm: NgForm) {
-    this.disbursService.getDisbursementNextNumbering((num)=>{
-      disbursForm.controls['identifier'].setValue(num);
+    this.disbursService.getDisbursementNextNumbering((num) => {
+      disbursForm.controls['numero'].setValue(num);
       if (disbursForm.value['provider']!=null && disbursForm.value['provider']!='') {
-        this.userService.addProviderUser(disbursForm.value['civility'], disbursForm.value['provider'], disbursForm.value['mobile'], (p:User)=>{
-          disbursForm.controls['for'].setValue(p.userId);
+        this.userService.addProviderUser( disbursForm.value['civility'], disbursForm.value['provider'],
+          disbursForm.value['mobile'], (p:User)=>{
+            disbursForm.controls['for'].setValue(p.userId);
           this.disbursService.addDisbursmentRequest(this.user.userId, disbursForm, this.reasonIds,() => {
             this.router.navigate(['/decaissement/historique']);
           });

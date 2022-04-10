@@ -4,6 +4,21 @@
 .generale.card { margin-top: 0px; min-height: 400px; }
 .generale.card .header-title {text-align: right; position: absolute; right: 20px; top: 15px}
 
+.card-header {
+  padding: 0.5rem 1.6rem;
+}
+
+.card-header .nav-link {
+  width: 239px;
+}
+
+.card-header .nav-link.active {
+  color: #ffffff;
+  font-weight: bold;
+  background-color: #4f6064;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
 .card-body .central .side {width: 40%}
 .card-body .central .content {width: 50%}
 

@@ -21,7 +21,7 @@
       </thead>
 
       <tbody >
-        <tr *ngFor="let disb of pendingDisburs;" [ngClass]="{'untreated': checktreatedValidation(disb) }"
+        <tr *ngFor="let disb of pendingDisburs;" [ngClass]="{'untreated': !checktreatedValidation(disb)}"
             routerLink="./requete/{{ disb.debursementId }}/processing">
           <td>{{ disb.createdOn | date: 'dd/MM/yyyy à HH:mm' }}</td>
 
@@ -30,7 +30,7 @@
               <span *ngIf="disb.budgindexId==bindex.budgindexId">
                <span *ngFor="let sector of budgetsectors">
                  <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-                   {{ formatIdentifier(disb.createdOn,sector.budgsectorId, disb.identifier) }}
+                   {{ disb.identifier }}
                  </span>
                </span></span></span>
           </td>

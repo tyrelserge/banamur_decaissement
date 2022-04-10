@@ -6,6 +6,7 @@ import {NgForm} from "@angular/forms";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
 import {BudgetSecteur} from "../models/budget.model";
+import {UtilsResources} from "./utils.resources";
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
 
   getUserList(callback: (allUser: User[]) => void) {
 
-    const url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/all";
+    const url = UtilsResources.baseUrl + "/user/all";
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -49,7 +50,7 @@ export class UserService {
 
   createUser(form: NgForm) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/create";
+    let url = UtilsResources.baseUrl + "/user/create";
 
     let params = {
       'civility': form.value['civility'],
@@ -80,11 +81,15 @@ export class UserService {
 
             if (moderators==undefined || moderators.length==0) {
               this.setUserStatus(userId, 'active', () => {
-                this.sendNotification(userId, 1, 0, '/moderateur/reglage/comptes');
-                this.sendNotification(userId, 3, 0,'/moderateur/reglage/comptes');
+                this.sendLocalNotification(userId, 1, '/moderateur/reglage/comptes');
+                this.sendLocalNotification(userId, 3, '/moderateur/reglage/comptes');
               });
             } else {
-              this.sendNotification(userId, 1, 2, '/moderateur/reglage/comptes');
+              this.sendLocalNotification(userId, 1, '/moderateur/reglage/comptes');
+              this.sendLocalNotification(userId,  2, '/moderateur/reglage/comptes');
+              this.getUserFcmToken(userId, token => {
+                this.sendAndroidNotification(2, false, token, '/moderateur/reglage/comptes');
+              });   // Send recipient notification
             }
             this.sendSignupMail(data.response);
             this.authService.signIn(form.value['email'], form.value['password'], () => {
@@ -108,7 +113,7 @@ export class UserService {
 
     if (userId==undefined) return;
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+ userId +'/set-status';
+    let url = UtilsResources.baseUrl + '/user/'+ userId +'/set-status';
 
     let headers = new HttpHeaders({
       'Content-type': 'application/json'
@@ -126,7 +131,7 @@ export class UserService {
   }
 
   getUser(userId: number | undefined, callback: (user: User) => void) {
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/' + userId ;
+    const url = UtilsResources.baseUrl + '/user/' + userId ;
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
@@ -170,7 +175,7 @@ export class UserService {
 
   getProfilesList(callback:(profiles: Profile[]) => void){
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/profiles';
+    const url = UtilsResources.baseUrl + '/user/profiles';
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
@@ -185,7 +190,7 @@ export class UserService {
   }
   getDepartementsList(callback: (departements: Departement[]) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/departments';
+    const url = UtilsResources.baseUrl + '/user/departments';
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
@@ -200,7 +205,7 @@ export class UserService {
   }
   getOfficesList(callback: (offices: Office[]) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/offices';
+    const url = UtilsResources.baseUrl + '/user/offices';
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
@@ -216,7 +221,7 @@ export class UserService {
   getUserProfil() {}
   getDepartement(departmentId: number | undefined, callback: (departement: Departement) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/department/' + departmentId ;
+    const url = UtilsResources.baseUrl + '/user/department/' + departmentId ;
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
         if (data.statusCode == "SUCCESS") {
@@ -234,13 +239,28 @@ export class UserService {
     });
   }
 
-  sendNotification(userId: number | undefined, userNoticeId: number, adminsNoticeId: number, link: string) {
+  getNotificationMessage(noticeId: number, callback: (message: any) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/notify';
+    let url = UtilsResources.baseUrl + '/user/notification/message/' + noticeId;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode=="SUCCESS") {
+          callback(data.response);
+        } else {
+          console.error('Message not found');
+        }
+        return false
+      },
+      error => console.error('There was an error!', error));
+  }
+  sendLocalNotification(userId: number | undefined, noticeId: number, link: string) {
+
+    const url = UtilsResources.baseUrl + '/user/notify';
 
     let params = {
       'userId' : userId,
-      'notificationId' : userNoticeId,
+      'notificationId' : noticeId,
       'notificationLink' : link
     }
 
@@ -252,21 +272,51 @@ export class UserService {
       data => {},
       error => console.error('There was an error!', error));
 
+    /*
     if (adminsNoticeId!=0) {
       this.getUserList((users)=>{
         let moderators: User[] | undefined = this.sortUsersByLevel(users, ['111', '110']);
         if (moderators)  for (let moderator of moderators) {
-        this.httpClient.post<ResponseInterface>(url,
-          {'userId' : moderator.userId, 'notificationId' : adminsNoticeId, 'notificationLink': link},
-          {headers}).subscribe(data => {},
-          error => console.error('There was an error!', error));
+          this.httpClient.post<ResponseInterface>(url,
+            {'userId' : moderator.userId, 'notificationId' : adminsNoticeId, 'notificationLink': link},
+            {headers}).subscribe(data => {},
+            error => console.error('There was an error!', error));
         }
       });   // send to moderators
-    }
+    }*/
   }
+  sendAndroidNotification(noticeId: number, topic: boolean, to: string, link: string) {
+
+    const url = UtilsResources.fcmBaseUrl + '/send';
+
+    if (topic) {
+      to = "/topics/" + to;
+    }
+
+    let headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      'Authorization': 'key=' + UtilsResources.FCM_SERVER_KEY
+    })
+
+    this.getNotificationMessage(noticeId, message => {
+
+        let params = {
+          'to': to,
+          'notification': {
+            'title': message.notificationSubject,
+            'body': message.notificationDetails
+          }
+        }
+
+        this.httpClient.post<ResponseInterface>(url, params,{headers}).subscribe(
+          data => {},
+          error => console.error('There was an error!', error));
+    });
+  }
+
   refrechNotification(userId: number | undefined, callback: (notifs: NotifUser[]) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/notifies/" + userId;
+    let url = UtilsResources.baseUrl + "/user/notifies/" + userId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -280,7 +330,7 @@ export class UserService {
   }
   goToNotificationLink(notificationId: number | undefined, callback: (userId:number) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/notify/opened/" + notificationId;
+    let url = UtilsResources.baseUrl + "/user/notify/opened/" + notificationId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -298,7 +348,7 @@ export class UserService {
 
     return;
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/sendmail';
+    const url = UtilsResources.baseUrl + '/user/sendmail';
 
     let params = {
       'address' : user.email,
@@ -332,7 +382,7 @@ export class UserService {
 
   addDepartment(userId: number | undefined, form: NgForm, callback: (department: Departement) => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/department/create';
+    let url = UtilsResources.baseUrl + '/user/department/create';
 
     let params = {
       'userId': userId,
@@ -355,7 +405,7 @@ export class UserService {
   }
   addOffice(userId: number | undefined, form: NgForm, callback: (office:Office) => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/office/create';
+    let url = UtilsResources.baseUrl + '/user/office/create';
 
     let params = {
       'userId': userId,
@@ -392,7 +442,7 @@ export class UserService {
 
   setUserOffice(userId: number | undefined, offices: (number | undefined)[], callback: () => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/office-set';
+    let url = UtilsResources.baseUrl + '/user/office-set';
 
     let params = {
       'userId': userId,
@@ -416,7 +466,7 @@ export class UserService {
   }
   addProviderUser(civility: string, porvider:string, modile:string, callback: (user: User) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/create";
+    let url = UtilsResources.baseUrl + "/user/create";
 
     let providerUserName = porvider.replace(/ /g, "");
     let firstname = porvider.split(' ')[0];
@@ -452,7 +502,7 @@ export class UserService {
   }
 
   seeNotifications(userId: number | undefined, callback: () => void) {
-    const url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/notify/seen/" + userId;
+    const url = UtilsResources.baseUrl + "/user/notify/seen/" + userId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -466,7 +516,7 @@ export class UserService {
   }
   lookForuserbyname(username: string, callback: (users: User[]) => void) {
 
-    const url = "http://62.171.152.70:8080/decaissement-api-0.0.1/user/search/" + username;
+    const url = UtilsResources.baseUrl + "/user/search/" + username;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -482,7 +532,7 @@ export class UserService {
 
   setPassword(userId: number | undefined, form: NgForm, callback: () => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+ userId +'/setpassword';
+    let url = UtilsResources.baseUrl + '/user/'+ userId +'/setpassword';
 
     let params = {
       'pwd': form.value['pwd']
@@ -503,4 +553,21 @@ export class UserService {
       },
       error => console.error('There was an error!', error));
   }
+
+  public getUserFcmToken(userId: number | undefined, callback: (token: string) => void) {
+
+    let url = UtilsResources.baseUrl + '/user/fcm-token/' + userId;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode=="SUCCESS") {
+          callback(data.response.fcmTokenAccess);
+        } else {
+          console.error('Token not found');
+        }
+        return false
+      },
+      error => console.error('There was an error!', error));
+  }
+
 }

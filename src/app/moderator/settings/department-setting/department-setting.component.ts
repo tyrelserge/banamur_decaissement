@@ -63,6 +63,7 @@ export class DepartmentSettingComponent implements OnInit {
       this.userService.getDepartementsList((departments) => {
         this.departments = departments;
       });
+      departmentForm.resetForm();
     });
   }
   onSubmitOffice(officeForm: NgForm) {
@@ -82,6 +83,7 @@ export class DepartmentSettingComponent implements OnInit {
           });
         });
       });
+      officeForm.resetForm();
     })
   }
 }

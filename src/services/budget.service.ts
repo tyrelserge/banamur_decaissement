@@ -3,6 +3,7 @@ import {ResponseInterface} from "../models/response.interface";
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {NgForm} from "@angular/forms";
+import {UtilsResources} from "./utils.resources";
 
 @Injectable()
 export class BudgetService {
@@ -11,7 +12,7 @@ export class BudgetService {
 
   getBudgetSector(budgetSectorId: number | undefined, callback: (budgetSector: BudgetSecteur) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sector/'+budgetSectorId;
+    const url = UtilsResources.baseUrl + '/budget/sector/'+budgetSectorId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -25,7 +26,7 @@ export class BudgetService {
   }
   getGroupBugdet(groupBudgetId: number | undefined, callback:(groupBudget: GroupedBudget) => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudget/' + groupBudgetId;
+    let url = UtilsResources.baseUrl + '/budget/groupedbudget/' + groupBudgetId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -41,7 +42,7 @@ export class BudgetService {
   }
   getBugdetIndex(budgindexId: number | undefined, callback:(budgetIndex: BudgetIndex) => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindex/' + budgindexId;
+    let url = UtilsResources.baseUrl + '/budget/budgetindex/' + budgindexId;
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -58,7 +59,7 @@ export class BudgetService {
 
   addGroupBudget(userId: number | undefined, form: NgForm, callback: (groupBudget: GroupedBudget) => void) {
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudget';
+    let url = UtilsResources.baseUrl + '/budget/groupedbudget';
 
     let params = {
       'userId': userId,
@@ -87,7 +88,7 @@ export class BudgetService {
   addBudgetIndex(userId: number | undefined, form: NgForm, callback: (budgetIndex: BudgetIndex) => void) {
 
 
-    let url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindex';
+    let url = UtilsResources.baseUrl + '/budget/budgetindex';
 
     let params = {
       'userId': userId,
@@ -117,7 +118,7 @@ export class BudgetService {
 
   getBudgetSectorList(callback: (budgetSector: BudgetSecteur[]) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/budget/sectors';
+    const url = UtilsResources.baseUrl + '/budget/sectors';
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -131,7 +132,7 @@ export class BudgetService {
   }
   getGroupBudgetList(callback:(groupsBudget: GroupedBudget[]) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/groupedbudgets";
+    let url = UtilsResources.baseUrl + "/budget/groupedbudgets";
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -147,7 +148,7 @@ export class BudgetService {
   }
   getBugdetIndexList(callback:(budgetsIndex: BudgetIndex[]) => void) {
 
-    let url = "http://62.171.152.70:8080/decaissement-api-0.0.1/budget/budgetindexs";
+    let url = UtilsResources.baseUrl + "/budget/budgetindexs";
 
     this.httpClient.get<ResponseInterface>(url).subscribe(
       data => {
@@ -162,4 +163,37 @@ export class BudgetService {
       });
   }
 
+  searchIndexIntoSelectedBudget(groupbudget: string, input: string, callback: (budgetsIndex: BudgetIndex[]) => void) {
+
+    let url = UtilsResources.baseUrl + "/budget/groupedbudget/"+ groupbudget +"/budgetindex/search/"+ input;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.info("aucune information trouvée !");
+        }
+      },
+      error => {
+        console.error('There was an error!', error)
+      });
+  }
+
+  searchInputGroupedBudget(input: string, callback: (groupedBudget: GroupedBudget[]) => void) {
+
+    let url = UtilsResources.baseUrl + "/budget/groupedbudget/search/"+ input;
+
+    this.httpClient.get<ResponseInterface>(url).subscribe(
+      data => {
+        if (data.statusCode == "SUCCESS") {
+          callback(data.response);
+        } else {
+          console.info("aucune information trouvée !");
+        }
+      },
+      error => {
+        console.error('There was an error!', error)
+      });
+  }
 }

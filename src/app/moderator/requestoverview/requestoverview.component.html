@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="container">
   <h5 class="page-title">Mes décaissements </h5>
-  <div class="requests-access"><a href="#" routerLink="/moderateur/pending-requetes">Retour aux requêtes</a></div>
+  <div class="requests-access"><a href="#" routerLink="/moderateur/requetes">Retour aux requêtes</a></div>
 
   <div class="request-item">
 
@@ -10,10 +10,12 @@
         <span *ngIf="disbursement.budgindexId==bindex.budgindexId">
          <span *ngFor="let sector of budgetsectors">
            <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-             {{ formatIdentifier(disbursement.createdOn,sector.budgsectorId, disbursement.identifier) }}
+             {{ disbursement.identifier }}
            </span>
          </span></span></span>
     </h6>
+    <p [hidden]="!status"
+      style="color: #b53700; font-weight: bold; font-size: 16pt; text-align: center; border: 1px solid #b53700"> {{ status }}</p>
 
     <table>
       <thead>
@@ -24,7 +26,7 @@
         <td>INDICE</td>
         <td>MONTANT</td>
         <td>APPROUVE</td>
-        <td>OBSERVATION</td>
+        <td [hidden]="!treated">OBSERVATION</td>
       </tr>
       </thead>
 
@@ -43,12 +45,12 @@
 
         <td>
           <span *ngFor="let bindex of budgetsIndex">
-              <span *ngIf="bindex.budgindexId==disbursement.budgindexId">{{ bindex.budgindexName }}</span>
-            </span>
+            <span *ngIf="bindex.budgindexId==disbursement.budgindexId">{{ bindex.budgindexName }}</span>
+          </span>
         </td>
-        <td style="text-align: right;">{{ disbursement.amountRequested }}</td>
+        <td style="text-align: center;">{{ disbursement.amountRequested }}</td>
         <td><span style="color: #8b2b17;">{{ disbursement.amountApproved==null ? '-' : disbursement.amountApproved }}</span></td>
-        <td><a href="#" routerLink="/moderateur/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
+        <td [hidden]="!treated"><a href="#obsev" routerLink="./" (click)="onExportToPDF(disbursement.debursementId)"> Impriner </a></td>
       </tr>
       </tbody>
     </table>
@@ -58,20 +60,20 @@
   <div class="validation-chain">
 
     <h6>Chaine de validation</h6>
-
+    <p *ngIf="validationChain.length==0" style="text-align: center; color: #4F6064">En attente d'approbation</p>
     <table>
       <thead>
-      <tr>
-        <td class="chain-item chain1"> {{ validationChain[0] ? validationChain[0].department.toUpperCase() : 'DIRECTION' }}</td>
-        <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].department.toUpperCase() : 'COMPTABILITE' }}</td>
-        <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].department.toUpperCase() : 'CAISSE' }}</td>
-      </tr>
+        <tr>
+          <td *ngFor="let val of validationChain; let i = index;" class="chain-item chain{{ i+1 }}"> {{ validationChain[i] ? validationChain[i].department.toUpperCase() : 'APPROBATION' }}</td>
+         <!-- <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].department.toUpperCase() : 'VERIFICATION' }}</td>
+          <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].department.toUpperCase() : 'DECAISSEMENT' }}</td> -->
+        </tr>
       </thead>
 
       <tr style="height: 80px;">
-        <td class="chain-item chain1"> {{ validationChain[0] ? validationChain[0].validator : ' - ' }}</td>
-        <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].validator : ' - ' }}</td>
-        <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].validator : ' - ' }}</td>
+        <td *ngFor="let val of validationChain; let i = index;" class="chain-item chain{{ i+1 }}"> {{ validationChain[i] ? validationChain[i].validator : ' - ' }}</td>
+        <!-- <td class="chain-item chain2"> {{ validationChain[1] ? validationChain[1].validator : ' - ' }}</td>
+        <td class="chain-item chain3"> {{ validationChain[2] ? validationChain[2].validator : ' - ' }}</td>-->
       </tr>
 
       <tr>

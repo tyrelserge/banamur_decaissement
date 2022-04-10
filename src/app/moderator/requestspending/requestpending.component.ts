@@ -6,7 +6,6 @@ import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 import {BudgetService} from "../../../services/budget.service";
 import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
-import {formatDate} from "@angular/common";
 import {UserService} from "../../../services/user.service";
 
 @Component({
@@ -33,8 +32,6 @@ export class RequestpendingComponent implements OnInit {
   approved: number = 0;
   rejected: number = 0;
 
-  treated: boolean = false;
-
   constructor(private authService: AuthService,
               private router: Router,
               private disbursService: DisbursService,
@@ -51,18 +48,22 @@ export class RequestpendingComponent implements OnInit {
         this.users = users;
     })
 
-    this.disbursService.getPendingDisbursements((disbursements) => {
+    this.disbursService.getPendingDisbursements((disbursements: Disbursement[]) => {
+      this.pendingDisburs = disbursements;
+      /*
       for(let disb of disbursements) {
         this.pendingDisburs.push(disb)
         this.countPending += 1;
       }
-
+      */
     })
-    this.disbursService.getAllDisbursements((disbursements) => {
+    this.disbursService.getAllDisbursements((disbursements:Disbursement[]) => {
+      this.allDisbursement = disbursements;
+      /*
       for(let i of disbursements) {
         this.allDisbursement.push(i)
         this.countAllDisburs += 1;
-      }
+      } */
       //this.disbursService.treatedValidation(this.user.userId, disbursements, (data) => {
         //this.treated = data;
       //});
@@ -82,9 +83,16 @@ export class RequestpendingComponent implements OnInit {
   }
 
   checktreatedValidation(disbursement: Disbursement) {
-    this.disbursService.treatedValidation(this.user.userId, disbursement, (treated:boolean) => {
-      return !treated;
-    });
+
+    for (let val of disbursement.validations) {
+      if (val.userId == this.user.userId) {
+        return true;
+      }
+    }
+    return false;
+    // this.disbursService.treatedValidation(this.user.userId, disbursement, (treated:boolean) => {
+     // return treated;
+   //});
   }
 
   countStatus(disbursements: Disbursement[]) {
@@ -95,12 +103,12 @@ export class RequestpendingComponent implements OnInit {
     }
   }
 
-
+/*
   formatIdentifier(createdOn: string | undefined, budgsectorId:number | undefined, identifier:string | undefined ) {
     if (createdOn!=undefined && budgsectorId!=undefined)
-      return 'DECAISS' + formatDate(new Date(createdOn), 'yyMM', 'en_US') +
+      return '' + formatDate(new Date(createdOn), 'yyMM', 'en_US') +
         '/' + this.disbursService.sectorIndexAlphab(budgsectorId.toString()) + identifier;
     return null;
   }
-
+*/
 }

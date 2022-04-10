@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ResponseUser} from "../models/response.interface";
 import {Router} from "@angular/router";
 import {Office, Profile, User} from "../models/user.model";
-import {UserService} from "./user.service";
+import {UtilsResources} from "./utils.resources";
 
 @Injectable()
 export class AuthService {
@@ -62,7 +62,7 @@ export class AuthService {
 
   signIn(username:string, password:string, callback: (user:User) => void) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/login';
+    const url = UtilsResources.baseUrl + '/user/login';
 
     let params = {
       'username' : username,
@@ -90,7 +90,7 @@ export class AuthService {
 
   signInById(userId: number, password: string, redirectTo:string | null) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+userId;
+    const url = UtilsResources.baseUrl + '/user/'+userId;
 
     this.httpClient.get<ResponseUser>(url).subscribe(
       data => {
@@ -106,10 +106,9 @@ export class AuthService {
       },
       error => console.error('There was an error!', error));
   }
-
   setPassword(userId:number, oldPassword:string, newPassword:string, redirectTo:string | null) {
 
-    const url = 'http://62.171.152.70:8080/decaissement-api-0.0.1/user/'+userId+'/setpassword';
+    const url = UtilsResources.baseUrl + '/user/'+userId+'/setpassword';
 
     let headers = new HttpHeaders({
       'Content-type': 'application/json'
@@ -125,6 +124,5 @@ export class AuthService {
       },
       error => console.error('There was an error!', error));
   }
-
 
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "bdecaiss": {
+    "banamur-decaissement": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/bdecaiss",
+            "outputPath": "dist/banamur-decaissement",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -30,7 +30,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/screen.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -69,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "bdecaiss:build:production"
+              "browserTarget": "banamur-decaissement:build:production"
             },
             "development": {
-              "browserTarget": "bdecaiss:build:development"
+              "browserTarget": "banamur-decaissement:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "bdecaiss:build"
+            "browserTarget": "banamur-decaissement:build"
           }
         },
         "test": {
@@ -103,5 +105,5 @@
       }
     }
   },
-  "defaultProject": "bdecaiss"
+  "defaultProject": "banamur-decaissement"
 }

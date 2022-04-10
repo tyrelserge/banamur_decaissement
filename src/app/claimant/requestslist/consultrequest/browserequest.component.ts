@@ -44,11 +44,13 @@ export class BrowserequestComponent implements OnInit {
     });
   }
 
+/*
   formatIdentifier(createdOn: string | undefined, budgsectorId:number | undefined, identifier:string | undefined ) {
     if (createdOn!=undefined && budgsectorId!=undefined)
-      return 'DECAISS' + formatDate(new Date(createdOn), 'yyMM', 'en_US') +
+      return '' + formatDate(new Date(createdOn), 'yyMM', 'en_US') +
         '/' + this.disbursService.sectorIndexAlphab(budgsectorId.toString()) + identifier;
     return null;
   }
+*/
 
 }

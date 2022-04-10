@@ -1,0 +1,77 @@
+<app-navbar></app-navbar>
+  <div class="container">
+    <h4 class="page-title">Rapport de decaissement</h4>
+
+    <div class="context-bar">
+      <form (ngSubmit)="onsubmitDisburReportFetch(reportForm)" #reportForm="ngForm">
+        <ul>
+          <li>
+            <label>Affectation : </label>
+            <select class="form-select" name="bugdetsector" ngModel="ALL" required>
+              <option value="ALL" selected>-- TOUT SELECTIONNER --</option>
+              <option *ngFor="let sector of budgetSectors" value="{{sector.budgsectorId}}">{{ sector.budgsectorName }}</option>
+            </select>
+          </li>
+
+          <li>
+            <label for="from">Du :</label>
+            <input type="date" name="from" class="form-control field-date" placeholder="Departement" id="from" ngModel="{{ today | date: 'yyyy-MM-dd' }}" required>
+          </li>
+
+          <li>
+            <label>Au :</label>
+            <input type="date" name="to" class="form-control field-date" placeholder="Departement" ngModel="{{ today | date: 'yyyy-MM-dd' }}" required>
+          </li>
+
+          <li>
+            <div class="input-group-text" style=" height: 38px; margin-top:0px; line-height: 38px">
+              <label for="checkTreated" style="margin-top: -2px">Payés</label>
+              <input  type="checkbox" checked name="treated" class="form-check-input mt-0" id="checkTreated" [ngModel]="true">
+            </div>
+          </li>
+
+          <li>
+            <button class="btn btn-outline-primary" [disabled]="reportForm.invalid" type="submit">Montrer</button>
+          </li>
+          <li>
+            <button class="btn btn-outline-primary" type="button" [disabled]="reportForm.invalid" (click)="onExportToExcel(reportForm)">Exporter</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+
+    <div class="display-selected">
+      <table>
+        <thead>
+          <tr style="">
+            <td>Désignation</td>
+            <td>Affectation</td>
+            <td>Bénéficiaire</td>
+            <td>N° Pièce</td>
+            <td>Date</td>
+            <td>Sortie</td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let disb of disbursRapport" routerLink="/moderateur/requete/{{ disb.debursementId }}">
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}">
+              {{ disb.reason }}</td>
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}"style="text-align: center">
+              {{ disb.budgsectorName +' - '+ disb.groupedbudgetName }}</td>
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}" style="text-align: left">
+              {{ disb.civility + '. ' + disb.firstname + ' ' + disb.lastname }}</td>
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}">
+              {{ disb.identifier }}</td>
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}">
+              {{ disb.createdOn }}</td>
+            <td [ngClass]="{'untreated': processingChecked(disb), 'rejected': disb.status=='rejected'}" style=" text-align: right">
+              {{ disb.amountApproved=='null' ? ' - ' : disb.amountApproved }}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+  </div>
+<app-footer></app-footer>

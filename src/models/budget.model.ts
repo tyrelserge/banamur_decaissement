@@ -1,6 +1,7 @@
 
 export class BudgetSecteur{
   budgsectorId: number | undefined;
+  budgsectorChar: string | undefined;
   budgsectorName: string | undefined;
   budgsectorDescription: string | undefined;
   budgsectorImg: string | undefined;

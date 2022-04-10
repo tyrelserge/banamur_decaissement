@@ -10,7 +10,7 @@
               <span *ngIf="disbursement.budgindexId==bindex.budgindexId">
                <span *ngFor="let sector of budgetsectors">
                  <span *ngIf="bindex.budgsectorId==sector.budgsectorId">
-                   {{ formatIdentifier(disbursement.createdOn,sector.budgsectorId, disbursement.identifier) }}
+                   {{ disbursement.identifier }}
                  </span>
                </span></span></span>
     </h6>
@@ -49,7 +49,7 @@
 
         <td style="text-align: right;">{{ disbursement.amountRequested }}</td>
         <td><span style="color: #8b2b17;">{{ disbursement.amountApproved==null ? '-' : disbursement.amountApproved }}</span></td>
-        <td><a href="#" routerLink="/decaissement/historique/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
+        <td><a href="./#/decaissement/historique/requete/{{ disbursement.debursementId }}#obsev"> Lire </a></td>
       </tr>
       </tbody>
     </table>

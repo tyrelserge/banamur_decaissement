@@ -25,6 +25,8 @@ export class BudgetResourcesComponent implements OnInit {
   budgetsIndex: BudgetIndex[] = new Array<BudgetIndex>();
   groupBudget: GroupedBudget = new GroupedBudget();
 
+  indexOfGroupedBudgetIdSelected: number | undefined;
+
   constructor(private authService: AuthService,
               private userService:UserService,
               private router: Router,
@@ -43,9 +45,9 @@ export class BudgetResourcesComponent implements OnInit {
     this.budgetService.getGroupBudgetList(groupsBudget => {
       this.groupsBudget = groupsBudget;
     });
-    this.budgetService.getBugdetIndexList(budgetsIndex => {
-      this.budgetsIndex = budgetsIndex;
-    });
+    //this.budgetService.getBugdetIndexList(budgetsIndex => {
+      //this.budgetsIndex = budgetsIndex;
+    //});
   }
 
   onBudgetSectorSelected(form:NgForm) {
@@ -55,13 +57,17 @@ export class BudgetResourcesComponent implements OnInit {
   }
   onGroupbudgetSelected(e:Event){
     e.preventDefault();
-    this.budgetindexSelected = false;
-    this.groupbudgetSelected = !this.groupbudgetSelected;
+    if (this.budgetindexSelected) {
+      this.budgetindexSelected = false;
+      this.groupbudgetSelected = !this.groupbudgetSelected;
+    }
   }
-  onBudgetindexSelected(e:Event){
+  onBudgetindexSelected(e:Event) {
     e.preventDefault();
-    this.groupbudgetSelected = false;
-    this.budgetindexSelected = !this.budgetindexSelected;
+    if (this.groupbudgetSelected) {
+      this.groupbudgetSelected = false;
+      this.budgetindexSelected = !this.budgetindexSelected;
+    }
   }
 
   onChangeGroupBudgetSelect(indexbudgetForm: NgForm) {
@@ -82,12 +88,55 @@ export class BudgetResourcesComponent implements OnInit {
     });
   }
   onIndexBudgetSubmit(indexbudgetForm: NgForm) {
-    console.log(indexbudgetForm.value);
+    let groupbudgetId = indexbudgetForm.controls['groupbudget'].value;
+    console.log(groupbudgetId)
     this.budgetService.addBudgetIndex(this.user.userId, indexbudgetForm, (budgetIndex: BudgetIndex) => {
-      this.budgetService.getBugdetIndexList(budgetsIndex => {
+      this.budgetService.searchIndexIntoSelectedBudget(groupbudgetId, '', budgetsIndex => {
         this.budgetsIndex = budgetsIndex;
         indexbudgetForm.resetForm();
       });
     });
+  }
+
+  onClicGroupedBudget(savedbudgetForm: NgForm, indexbudgetForm: NgForm) {
+    indexbudgetForm.resetForm();
+    this.indexOfGroupedBudgetIdSelected = savedbudgetForm.controls['savedbudget'].value[0];
+    this.budgetsIndex = new Array<BudgetIndex>();
+    this.budgetService.getBugdetIndexList(budgetsIndex => {
+      for(let i of budgetsIndex) {
+      if (i.groupedbudgetId==this.indexOfGroupedBudgetIdSelected)
+        this.budgetsIndex.push(i);
+      }
+
+      this.budgetService.getGroupBugdet(this.indexOfGroupedBudgetIdSelected, (groupBudget) => {
+        this.groupBudget = groupBudget;
+        this.budgetService.getBudgetSector(groupBudget.budgsectorId, (budgetSector) => {
+          this.budgetsector =  budgetSector;
+        });
+      });
+    });
+  }
+
+  InputSearchBudgetIndex(indexbudgetForm: NgForm) {
+    this.budgetsIndex = new Array<BudgetIndex>();
+    let input = indexbudgetForm.controls['indexname'].value;
+    let groupbudgetId = indexbudgetForm.controls['groupbudget'].value;
+    this.budgetService.searchIndexIntoSelectedBudget(groupbudgetId, input, budgetsIndex => {
+      this.budgetsIndex = budgetsIndex;
+    });
+  }
+  InputSearchGroupedBudget(groupbudgetForm: NgForm) {
+    this.groupsBudget = new Array<GroupedBudget>();
+    let input = groupbudgetForm.controls['groupname'].value;
+    console.log(input)
+    if (input) {
+      this.budgetService.searchInputGroupedBudget(input, groupedBudget => {
+        this.groupsBudget = groupedBudget;
+      });
+    } else {
+      this.budgetService.getGroupBudgetList(groupsBudget => {
+        this.groupsBudget = groupsBudget;
+      });
+    }
   }
 }

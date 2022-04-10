@@ -23,6 +23,8 @@ export class ProcessrequestComponent implements OnInit {
   disbursement: Disbursement = new Disbursement();
   budgetIndex: BudgetIndex = new BudgetIndex();
   budgetSector:BudgetSecteur = new BudgetSecteur();
+  valid: boolean = true;
+  paynow:boolean = false;
 
   constructor(private authService: AuthService,
               private activeRoute: ActivatedRoute,
@@ -33,15 +35,16 @@ export class ProcessrequestComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.authService.isModerator()) this.router.navigate(['/']);
+
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
     const id = this.activeRoute.snapshot.params['disbursid'];
     this.disbursService.getDisbursementRequest(id, (disburs) => {
       this.disbursement = disburs;
-      //this.disbursService.treatedValidation(this.user.userId, [disburs], (treated) => {
-        //if ((disburs.status=='treated' || disburs.status=='rejected') || treated)
-        //  this.router.navigate(['moderateur/requete/'+this.disbursement.debursementId])
-      //});
+      this.disbursService.treatedValidation(this.user.userId, [disburs], (treated) => {
+        if ((disburs.status=='treated' || disburs.status=='rejected') || treated)
+          this.router.navigate(['moderateur/requete/'+this.disbursement.debursementId])
+      });
       this.budgetService.getBugdetIndex(disburs.budgindexId, (index) =>{
         this.budgetIndex = index;
         this.budgetService.getBudgetSector(index.budgsectorId, (sector) => {
@@ -58,13 +61,16 @@ export class ProcessrequestComponent implements OnInit {
   }
 
   onSubmitValidation(disbursement: Disbursement, valForm: NgForm) {
-    this.disbursService.setValidationDisbursement(
-      this.user.userId ,
-      3,
-      disbursement,
-      valForm,
-      ()=>{ this.router.navigate(['/moderateur/pending-requetes']) });
-
+    this.disbursService.setValidationDisbursement(this.user.userId, disbursement, valForm,()=>{
+        this.router.navigate(['/moderateur/requetes']);
+    });
   }
 
+  onValidationCheck() {
+    this.valid = !this.valid;
+  }
+
+  onPayNowChecked() {
+    this.paynow = !this.paynow;
+  }
 }

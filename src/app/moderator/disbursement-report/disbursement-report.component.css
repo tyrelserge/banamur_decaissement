@@ -1,0 +1,28 @@
+
+
+.container{min-height: 480px; }
+
+.page-title {
+  display:inline-block; margin-top: 46px; color:#4F6064; font-weight: bold;
+}
+
+.context-bar {height: 40px; margin-top: 40px;}
+.context-bar ul{ margin-left: 0; padding: 0;}
+.context-bar li { float:  left; margin-right: 20px; list-style: none;}
+.context-bar li label{ float:  left; margin-right: 10px; margin-top: 5px}
+.context-bar li select{ width: 260px}
+.context-bar li input.field-date{ width: 160px}
+
+.display-selected {margin-top: 40px}
+.display-selected table {width: 100%; height: 100%;}
+.display-selected thead{background-color: lightgray;}
+.display-selected thead tr{height: 46px;}
+.display-selected thead tr td{text-align: center; padding-left: 10px; padding-right: 10px}
+
+.display-selected tr{cursor: pointer; height: 36px}
+
+.display-selected tbody tr{border-bottom: 1px gray solid }
+.display-selected tbody tr:hover{ color: #0056a9; background-color: #f4f4f4}
+
+.display-selected .untreated {font-weight: bold}
+.display-selected .rejected {font-weight: normal; color: #b53700;}

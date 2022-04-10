@@ -3,7 +3,7 @@
 <div class="container">
 
   <h5 class="page-title">Traitement de demande</h5>
-  <div class="requests-access"><a href="#" routerLink="/moderateur/pending-requetes">Retour aux requêtes</a></div>
+  <div class="requests-access"><a href="#" routerLink="/moderateur/requetes">Retour aux requêtes</a></div>
 
   <div class="side-left">
 
@@ -131,13 +131,31 @@
         </tr>
         <tr>
 
-          <td class="col1" colspan="2">
+          <td class="col1" colspan="">
             <div class="form-check form-switch" style="margin-left: 0; padding-left: 0">
-              <input class="form-check-input" checked name="valid" type="checkbox" role="switch" id="flexSwitchCheckChecked" ngModel="true">
-              <label class="form-check-label" for="flexSwitchCheckChecked" style="margin-left: 10px">Refuser / Valider</label>
+              <div class="input-group-text" style=" height: 38px; margin-top: 2px">
+                <input class="form-check-input" name="valid" type="checkbox" role="switch" id="checkRejectOrValid"
+                       (dblclick)="onValidationCheck()" [(ngModel)]="valid">
+                <label class="form-check-label" for="checkRejectOrValid" style="margin-left: 10px">Refuser / Valider</label>
+              </div>
             </div>
           </td>
-          <td class="col3" colspan="2">
+          <td class="col2" colspan="2">
+            <div class="input-group mb-3" [hidden]="!valid">
+              <div class="input-group-text" style=" height: 38px; margin-top: 5px">
+                <label class="form-check-label" for="checkBayNow" style="margin-right: 10px;">Payer maintenant :</label>
+                <input name="paynow" class="form-check-input mt-2" id="checkBayNow" type="checkbox"
+                       (change)="onPayNowChecked()" ngModel>
+              </div>
+              <select name="paymode" class="form-select" ngModel [disabled]="!paynow" required>
+                <option value="" disabled>-- Selectionez --</option>
+                <option value="Espece">Espèce</option>
+                <option value="Cheque">Chèque</option>
+                <option value="MobileMonney">Mobile monney</option>
+              </select>
+            </div>
+          </td>
+          <td class="col3" colspan="">
             <button  type="submit" class="btn btn-primary" [disabled]="validationForm.invalid">Terminer</button>
           </td>
         </tr>

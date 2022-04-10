@@ -48,7 +48,6 @@
             </tr>
 
             <tr>
-
               <td class="col2">Administrateur</td>
               <td class="col3"><span style="color: green;">oui</span></td>
               <td class="col4"><span style="color: green;">oui</span></td>
@@ -78,7 +77,7 @@
               <td class="col2" colspan="4">
                 <div class="bloc-items">
                   <span class="item" *ngFor="let department of departments"> {{ department.departmentName }}
-                    <a href="#" class="del">X</a>
+                    <a href="#" routerLink="./" class="del">X</a>
                   </span>
                 </div>
 
@@ -101,7 +100,7 @@
 
                 <div class="bloc-items">
                   <span class="item" *ngFor="let office of offices"> {{ office.officeName }}
-                    <a href="#" class="del">X</a>
+                    <a href="#" routerLink="./" class="del">X</a>
                   </span>
                 </div>
 

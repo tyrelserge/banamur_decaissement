@@ -26,7 +26,7 @@
 .validation-chain table thead tr{height: 46px;}
 .validation-chain table tr td{text-align: center; border: 1px gray solid }
 
-.chain-item {width: 30%}
+/* .chain-item {width: 30%} */
 .hide {display: none}
 
 a, a:visited, a:hover { text-decoration: none; }
