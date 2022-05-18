@@ -210,7 +210,7 @@ export class DisbursService {
         //noticeAdmins = 15;
         //break;
       default:
-        action = valForm.value['valid']!='true' ? 'rejected' : 'verified';
+        action = valForm.value['valid']!=true ? 'rejected' : 'verified';
         noticeClaimant = 11;
         noticeAdmins = 10;
         break;
@@ -332,7 +332,7 @@ export class DisbursService {
         if (data.statusCode=='SUCCESS') {
           callback(data.response);
         } else {
-          console.error('Verifiez que tous les champs son entré correctement');
+          console.error('Aucune entrée correspondant à la periode recherchée');
         }
       },
       error => console.error('There was an error!', error));

@@ -130,12 +130,11 @@
           <td colspan="4"><hr></td>
         </tr>
         <tr>
-
           <td class="col1" colspan="">
             <div class="form-check form-switch" style="margin-left: 0; padding-left: 0">
               <div class="input-group-text" style=" height: 38px; margin-top: 2px">
                 <input class="form-check-input" name="valid" type="checkbox" role="switch" id="checkRejectOrValid"
-                       (dblclick)="onValidationCheck()" [(ngModel)]="valid">
+                       (click)="onValidationCheck()" [(ngModel)]="valid">
                 <label class="form-check-label" for="checkRejectOrValid" style="margin-left: 10px">Refuser / Valider</label>
               </div>
             </div>

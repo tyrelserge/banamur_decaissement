@@ -26,7 +26,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuth = this.authService.isAuth();
-    if (this.isAuth) this.router.navigate(['/']);
+    if (this.isAuth) this.router.navigate(['/unallowed']);
     this.userService.getOfficesList((offices) => {
       this.offices = offices
     });

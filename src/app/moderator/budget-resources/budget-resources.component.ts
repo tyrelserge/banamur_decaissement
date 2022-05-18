@@ -43,11 +43,11 @@ export class BudgetResourcesComponent implements OnInit {
     });
 
     this.budgetService.getGroupBudgetList(groupsBudget => {
-      this.groupsBudget = groupsBudget;
+      for (let gb of groupsBudget) {
+        if (gb.groupedbudgetName!='-')
+        this.groupsBudget.push(gb);
+      }
     });
-    //this.budgetService.getBugdetIndexList(budgetsIndex => {
-      //this.budgetsIndex = budgetsIndex;
-    //});
   }
 
   onBudgetSectorSelected(form:NgForm) {

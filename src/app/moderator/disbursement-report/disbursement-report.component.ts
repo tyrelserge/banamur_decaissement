@@ -52,6 +52,7 @@ export class DisbursementReportComponent implements OnInit {
   }
 
   onsubmitDisburReportFetch(form: NgForm) {
+    this.disbursRapport = new Array<DisbursRapport>();
     this.disbursService.getDisbursementRapportByPeriod(form, (disbursRapport: DisbursRapport[]) => {
       this.disbursRapport = disbursRapport;
     });

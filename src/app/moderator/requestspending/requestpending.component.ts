@@ -49,13 +49,23 @@ export class RequestpendingComponent implements OnInit {
     })
 
     this.disbursService.getPendingDisbursements((disbursements: Disbursement[]) => {
-      this.pendingDisburs = disbursements;
-      /*
-      for(let disb of disbursements) {
-        this.pendingDisburs.push(disb)
-        this.countPending += 1;
+      if (this.authService.checkUserLevel(this.user, '111')) {
+        this.countPending = 0;
+        this.pendingDisburs = disbursements;
+        for(let disb of disbursements) {
+          if (!this.checktreatedValidation(disb))
+            this.countPending += 1;
+        }
+      } else {
+        this.countPending = 0;
+        for(let disb of disbursements) {
+          if (disb.currentStep!=null && disb.currentStep!='0') {
+            this.pendingDisburs.push(disb)
+            if (!this.checktreatedValidation(disb))
+            this.countPending += 1;
+          }
+        }
       }
-      */
     })
     this.disbursService.getAllDisbursements((disbursements:Disbursement[]) => {
       this.allDisbursement = disbursements;
