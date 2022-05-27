@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {BudgetSecteur} from "../../../models/budget.model";
-import {DisbursRapport} from "../../../models/disburs.model";
-import {User} from "../../../models/user.model";
-import {AuthService} from "../../../services/auth.service";
-import {UserService} from "../../../services/user.service";
+import {BudgetSecteur} from "../../models/budget.model";
+import {DisbursRapport} from "../../models/disburs.model";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
-import {DisbursService} from "../../../services/disburs.service";
-import {BudgetService} from "../../../services/budget.service";
+import {DisbursService} from "../../services/disburs.service";
+import {BudgetService} from "../../services/budget.service";
 import {NgForm} from "@angular/forms";
 import {DatePipe} from "@angular/common";
 

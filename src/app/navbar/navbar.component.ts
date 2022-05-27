@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
-import {User, NotifUser} from "../../models/user.model";
+import {User, NotifUser} from "../models/user.model";
 import {HttpClient} from "@angular/common/http";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../services/user.service";
+import {SwUpdate} from "@angular/service-worker";
 
 @Component({
   selector: 'app-navbar',
@@ -21,16 +22,31 @@ export class NavbarComponent implements OnInit {
   switchMode: boolean = false;
   showSettings: boolean = false;
 
+  updateAvailable: boolean = false;
+
   constructor(private authService: AuthService, private router: Router,
               private httpClient: HttpClient,
-              private userService: UserService) {
+              private userService: UserService,
+              private update: SwUpdate) {
   }
 
   ngOnInit(): void {
+
+    if (this.update.isEnabled) {
+      this.update.available.subscribe(() => {
+        this.updateAvailable = true;
+      });
+    }
+
     this.isModerator = this.authService.isModerator();
     // @ts-ignore
     this.user = <User>(JSON.parse(localStorage.getItem('user')));
     this.loadUserNotification(this.user.userId);
+  }
+
+  doUpdate() {
+    this.updateAvailable = false;
+    window.location.reload();
   }
 
   onSignOut() {

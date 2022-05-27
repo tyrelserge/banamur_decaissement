@@ -1,15 +1,29 @@
 <nav class="navbar">
   <!-- <div class="container"> -->
 
-  <a class="navbar-brand" href="#" routerLink="/decaissement">
-    <img src="assets/img/banamur_logo_thumb.png" class="d-inline-block align-text-top">
-    <span>BANAMUR DECAISSEMENT</span>
-  </a>
+  <div class="navbar-brand">
+
+    <a href="#" routerLink="/decaissement">
+      <img src="assets/img/banamur_logo_thumb.png" class="d-inline-block align-text-top">
+      <span class="brand-name">BANAMUR DECAISSEMENT</span>
+    </a>
+
+    <!--
+    <button *ngIf="!updateAvailable" class="btn btn-dark download-btn" id="pwa-install-button"
+            title="Cliquez pour installer l'application sur votre bureau">Installer l'application
+    </button>
+    -->
+
+    <button *ngIf="updateAvailable" class="btn btn-outline-light update-notification" (click)="doUpdate()"
+            title="Cliquez pour mettre à jour l'application">Une Mise à jour est disponible !
+    </button>
+
+  </div>
 
   <div class="user-resume">
 
     <a href="#" class="notice-bulle" (click)="$event.preventDefault(); onDisplayNotice()">
-      {{ userNotfs!=undefined ? countNotif(userNotfs) : 0 }}
+      {{ userNotfs!=undefined ? countNotif(userNotfs)>=99 ? '99+' : countNotif(userNotfs)  : 0 }}
     </a>
 
     <h6><a href="#" routerLink="/profil" *ngIf="user!=null">

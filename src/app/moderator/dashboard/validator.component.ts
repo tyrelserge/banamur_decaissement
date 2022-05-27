@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement} from "../../../models/disburs.model";
-import {AuthService} from "../../../services/auth.service";
-import {DisbursService} from "../../../services/disburs.service";
-import {User} from "../../../models/user.model";
+import {Disbursement} from "../../models/disburs.model";
+import {AuthService} from "../../services/auth.service";
+import {DisbursService} from "../../services/disburs.service";
+import {User} from "../../models/user.model";
 import {Router} from "@angular/router";
-import {UserService} from "../../../services/user.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-validator',

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../../../services/auth.service";
+import {AuthService} from "../../../services/auth.service";
 import {HttpClient} from "@angular/common/http";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../../models/budget.model";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
 import {NgForm} from "@angular/forms";
-import {BudgetService} from "../../../../services/budget.service";
-import {User} from "../../../../models/user.model";
-import {UserService} from "../../../../services/user.service";
-import {DisbursService} from "../../../../services/disburs.service";
-import {ReasonItems} from "../../../../models/disburs.model";
+import {BudgetService} from "../../../services/budget.service";
+import {User} from "../../../models/user.model";
+import {UserService} from "../../../services/user.service";
+import {DisbursService} from "../../../services/disburs.service";
+import {ReasonItems} from "../../../models/disburs.model";
 import {formatDate} from "@angular/common";
 
 @Component({

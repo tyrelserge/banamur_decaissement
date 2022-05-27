@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement} from "../../../models/disburs.model";
-import {DisbursService} from "../../../services/disburs.service";
-import {User} from "../../../models/user.model";
-import {AuthService} from "../../../services/auth.service";
+import {Disbursement} from "../../models/disburs.model";
+import {DisbursService} from "../../services/disburs.service";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
-import {BudgetService} from "../../../services/budget.service";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
-import {UserService} from "../../../services/user.service";
+import {BudgetService} from "../../services/budget.service";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../models/budget.model";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-requestpending',

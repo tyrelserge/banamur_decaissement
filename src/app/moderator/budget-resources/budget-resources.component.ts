@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
-import {AuthService} from "../../../services/auth.service";
-import {UserService} from "../../../services/user.service";
+import {AuthService} from "../../services/auth.service";
+import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
-import {BudgetService} from "../../../services/budget.service";
-import {User} from "../../../models/user.model";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
+import {BudgetService} from "../../services/budget.service";
+import {User} from "../../models/user.model";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../models/budget.model";
 
 @Component({
   selector: 'app-budget-resources',

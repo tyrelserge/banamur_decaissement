@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
+import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
 import {NgForm} from "@angular/forms";
+
+declare const signinScreen: any;
 
 @Component({
   selector: 'app-signin',
@@ -18,6 +20,9 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    signinScreen();
+
     this.isAuth = this.authService.isAuth();
     if (this.isAuth) this.router.navigate(['/']);
   }

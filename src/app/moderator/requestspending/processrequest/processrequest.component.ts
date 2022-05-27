@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {BudgetIndex, BudgetSecteur} from "../../../../models/budget.model";
-import {User} from "../../../../models/user.model";
-import {AuthService} from "../../../../services/auth.service";
-import {BudgetService} from "../../../../services/budget.service";
+import {BudgetIndex, BudgetSecteur} from "../../../models/budget.model";
+import {User} from "../../../models/user.model";
+import {AuthService} from "../../../services/auth.service";
+import {BudgetService} from "../../../services/budget.service";
 import {NgForm} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DisbursService} from "../../../../services/disburs.service";
-import {Disbursement} from "../../../../models/disburs.model";
-import {UserService} from "../../../../services/user.service";
+import {DisbursService} from "../../../services/disburs.service";
+import {Disbursement} from "../../../models/disburs.model";
+import {UserService} from "../../../services/user.service";
 
 @Component({
   selector: 'app-processrequest',

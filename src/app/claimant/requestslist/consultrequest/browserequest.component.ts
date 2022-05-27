@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement} from "../../../../models/disburs.model";
-import {DisbursService} from "../../../../services/disburs.service";
+import {Disbursement} from "../../../models/disburs.model";
+import {DisbursService} from "../../../services/disburs.service";
 import {ActivatedRoute} from "@angular/router";
 import {formatDate} from "@angular/common";
-import {BudgetService} from "../../../../services/budget.service";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../../models/budget.model";
+import {BudgetService} from "../../../services/budget.service";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
 
 @Component({
   selector: 'app-browserequest',

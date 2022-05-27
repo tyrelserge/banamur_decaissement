@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement, ValidationAction} from "../../../models/disburs.model";
+import {Disbursement, ValidationAction} from "../../models/disburs.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DisbursService} from "../../../services/disburs.service";
-import {UserService} from "../../../services/user.service";
-import {User} from "../../../models/user.model";
-import {AuthService} from "../../../services/auth.service";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
-import {BudgetService} from "../../../services/budget.service";
+import {DisbursService} from "../../services/disburs.service";
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../models/budget.model";
+import {BudgetService} from "../../services/budget.service";
 import {DatePipe, formatDate} from "@angular/common";
 
 @Component({

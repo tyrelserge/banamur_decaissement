@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement} from "../../../models/disburs.model";
-import {DisbursService} from "../../../services/disburs.service";
-import {AuthService} from "../../../services/auth.service";
-import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../../models/budget.model";
+import {Disbursement} from "../../models/disburs.model";
+import {DisbursService} from "../../services/disburs.service";
+import {AuthService} from "../../services/auth.service";
+import {BudgetIndex, BudgetSecteur, GroupedBudget} from "../../models/budget.model";
 import {formatDate} from "@angular/common";
-import { User } from 'src/models/user.model';
-import { BudgetService } from 'src/services/budget.service';
+import { User } from 'src/app/models/user.model';
+import { BudgetService } from 'src/app/services/budget.service';
 
 @Component({
   selector: 'app-claimantrequest',

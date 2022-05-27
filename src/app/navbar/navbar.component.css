@@ -12,11 +12,19 @@ p { margin: 0; }
 }
 
 .navbar-brand {
-  margin-left: 40px; color: white;
+  display: inline-block; margin-left: 40px; color: white;
 }
 
 .navbar-brand img{
   width: 32px; margin-right: 10px;
+}
+
+.navbar-brand .brand-name {
+  margin-right: 120px;
+}
+
+.update-notification {
+  margin: 0 20px;
 }
 
 .navbar .user-resume {

@@ -2,13 +2,13 @@
   position: relative;
 }
 
-.bg-cover {
+#bg-cover {
   height: 624px;
-  background: url('../../assets/img/banamur_industries_brand_cover.png') center center no-repeat;
-  background-size: 1380px 720px;
+  background: url('../../assets/img/banamur_industries_brand_cover.png') 100% 100% no-repeat;
+  background-size: 100% 100%;
 }
 
-.bg-cover .btn-account-request {
+#bg-cover .btn-account-request {
   float: right; margin-top: 40px; margin-right: 0;
 }
 

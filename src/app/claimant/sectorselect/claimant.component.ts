@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Disbursement} from "../../../models/disburs.model";
-import {User} from "../../../models/user.model";
-import {AuthService} from "../../../services/auth.service";
-import {DisbursService} from "../../../services/disburs.service";
+import {Disbursement} from "../../models/disburs.model";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
+import {DisbursService} from "../../services/disburs.service";
 
 @Component({
   selector: 'app-claimant',

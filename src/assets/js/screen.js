@@ -1,13 +1,21 @@
-function init() {
-  this.windowResize();
-  window.addEventListener('resize', windowResize);
+function pageScreen() {
+  window.addEventListener('load', contentResize);
+  window.addEventListener('resize', contentResize);
 }
 
-windowResize = function() {
-  contentResize();
+function signinScreen() {
+  signinBgResize();
+  window.addEventListener('load', signinBgResize);
+  window.addEventListener('resize', signinBgResize);
+}
+
+signinBgResize = function() {
+  var bgCover = document.getElementById("bg-cover");
+  if (bgCover) bgCover.style.height = window.innerHeight + 'px';
 }
 
 contentResize = function() {
+
 /*
   var sideElement = document.querySelector("#content-side");
 
@@ -24,6 +32,4 @@ contentResize = function() {
   sideElement.style.overflow = 'auto';
 */
 }
-
-window.onload = init;
 

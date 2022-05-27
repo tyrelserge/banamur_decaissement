@@ -8,8 +8,8 @@ import { ValidatorComponent } from './moderator/dashboard/validator.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SignupComponent } from './signin/signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
-import {AuthService} from "../services/auth.service";
-import {GuardService} from "../services/guard.service";
+import {AuthService} from "./services/auth.service";
+import {GuardService} from "./services/guard.service";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { NavbarComponent } from './navbar/navbar.component';
@@ -18,14 +18,14 @@ import { FooterComponent } from './footer/footer.component';
 import { RequestpendingComponent } from './moderator/requestspending/requestpending.component';
 import { ClaimantrequestComponent } from './claimant/requestslist/claimantrequest.component';
 import { UnallowedComponent } from './claimant/unallowed/unallowed.component';
-import {UserService} from "../services/user.service";
+import {UserService} from "./services/user.service";
 import { ProfileComponent } from './profile/profile.component';
 import {ProfileSettingsComponent} from "./profile/profile-settings/profile-settings.component";
-import {BudgetService} from "../services/budget.service";
-import {DisbursService} from "../services/disburs.service";
+import {BudgetService} from "./services/budget.service";
+import {DisbursService} from "./services/disburs.service";
 import { BrowserequestComponent } from './claimant/requestslist/consultrequest/browserequest.component';
 import { ProcessrequestComponent } from './moderator/requestspending/processrequest/processrequest.component';
-import {SettingService} from "../services/setting.service";
+import {SettingService} from "./services/setting.service";
 import { RequestoverviewComponent } from './moderator/requestoverview/requestoverview.component';
 import { ProfilePreviewComponent } from './profile/profile-preview/profile-preview.component';
 import { ResourcesSettingComponent } from './moderator/settings/resources-setting/resources-setting.component';
@@ -35,6 +35,8 @@ import { DepartmentSettingComponent } from './moderator/settings/department-sett
 import { BudgetResourcesComponent } from './moderator/budget-resources/budget-resources.component';
 import { DisbursementReportComponent } from './moderator/disbursement-report/disbursement-report.component';
 import {DatePipe} from "@angular/common";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
 
@@ -103,7 +105,13 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes, { useHash: true }),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     AuthService,
